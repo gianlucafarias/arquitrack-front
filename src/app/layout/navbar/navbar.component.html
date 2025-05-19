@@ -1,0 +1,15 @@
+<mat-toolbar color="primary">
+  <a mat-button routerLink="/">Arquitrack</a>
+  <span class="spacer"></span>
+  <ng-container *ngIf="authService.isAuthenticated()">
+    <a mat-button routerLink="/proyectos">Proyectos</a>
+    <a mat-button routerLink="/clientes">Clientes</a>
+    <button mat-icon-button (click)="logout()" aria-label="Logout">
+      <mat-icon>exit_to_app</mat-icon>
+    </button>
+  </ng-container>
+  <ng-container *ngIf="!authService.isAuthenticated()">
+    <a mat-button routerLink="/auth/login">Login</a>
+    <a mat-button routerLink="/auth/register">Registro</a>
+  </ng-container>
+</mat-toolbar>
