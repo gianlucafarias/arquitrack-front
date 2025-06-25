@@ -1,0 +1,102 @@
+<div class="upload-photo-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon>add_photo_alternate</mat-icon>
+    Subir Foto al Proyecto
+  </h2>
+  
+  <div mat-dialog-content class="dialog-content">
+    <p class="project-info">
+      <strong>Proyecto:</strong> {{ data.projectName }}
+    </p>
+
+    <div class="file-upload-area" 
+         [class.has-file]="selectedFile"
+         [class.uploading]="isUploading">
+      
+      <div *ngIf="!selectedFile" class="file-drop-zone" (click)="fileInput.click()">
+        <mat-icon class="upload-icon">cloud_upload</mat-icon>
+        <p><strong>Haz clic para seleccionar</strong> o arrastra una imagen aquí</p>
+        <p class="file-info">Formatos: JPG, PNG, GIF, WEBP (máx. 10MB)</p>
+      </div>
+
+      <div *ngIf="selectedFile && previewUrl" class="file-preview">
+        <div class="preview-header">
+          <div class="file-info">
+            <h4>{{ selectedFile.name }}</h4>
+            <p>{{ getFileSize() }}</p>
+          </div>
+          <button mat-icon-button 
+                  type="button" 
+                  (click)="removeFile()" 
+                  [disabled]="isUploading"
+                  class="remove-file-btn">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+        <div class="image-preview">
+          <img [src]="previewUrl" [alt]="selectedFile.name">
+        </div>
+      </div>
+
+      <input #fileInput
+             id="photo-file"
+             type="file"
+             accept="image/*"
+             (change)="onFileSelected($event)"
+             style="display: none;">
+    </div>
+
+    <div *ngIf="isUploading" class="upload-progress">
+      <p>Subiendo imagen...</p>
+      <mat-progress-bar mode="determinate" [value]="uploadProgress"></mat-progress-bar>
+      <span class="progress-text">{{ uploadProgress }}%</span>
+    </div>
+
+    <form [formGroup]="photoForm" class="photo-metadata-form">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Título (opcional)</mat-label>
+        <input matInput 
+               formControlName="title"
+               placeholder="Ej: Fachada principal, Interior sala, etc."
+               [disabled]="isUploading">
+        <mat-icon matSuffix>title</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción (opcional)</mat-label>
+        <textarea matInput 
+                  formControlName="description"
+                  rows="3"
+                  placeholder="Describe lo que se muestra en la imagen..."
+                  [disabled]="isUploading"></textarea>
+        <mat-icon matSuffix>description</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Ubicación específica (opcional)</mat-label>
+        <input matInput 
+               formControlName="location"
+               placeholder="Ej: Primer piso, Área común, Cocina, etc."
+               [disabled]="isUploading">
+        <mat-icon matSuffix>place</mat-icon>
+      </mat-form-field>
+    </form>
+  </div>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-button 
+            type="button" 
+            (click)="onCancel()"
+            [disabled]="isUploading">
+      Cancelar
+    </button>
+    
+    <button mat-raised-button 
+            color="primary" 
+            (click)="onSubmit()"
+            [disabled]="!selectedFile || isUploading">
+      <mat-icon>cloud_upload</mat-icon>
+      {{ isUploading ? 'Subiendo...' : 'Subir Foto' }}
+    </button>
+  </div>
+</div> 

@@ -1,0 +1,66 @@
+<h2 mat-dialog-title>
+    <mat-icon>person_add</mat-icon>
+    Invitar usuario a "{{ data.projectName }}"
+  </h2>
+
+  <form [formGroup]="inviteForm" (ngSubmit)="onSubmit()">
+    <mat-dialog-content>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email del usuario</mat-label>
+                       <input
+             matInput
+             type="email"
+             formControlName="userEmail"
+             placeholder="usuario@ejemplo.com"
+             [disabled]="isLoading">
+           <mat-icon matSuffix>email</mat-icon>
+           <mat-error *ngIf="inviteForm.get('userEmail')?.hasError('required')">
+             El email es requerido
+           </mat-error>
+           <mat-error *ngIf="inviteForm.get('userEmail')?.hasError('email')">
+             Ingrese un email válido
+           </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Rol en el proyecto</mat-label>
+          <mat-select formControlName="roleInProject" [disabled]="isLoading">
+            <mat-option 
+              *ngFor="let role of roleOptions" 
+              [value]="role.key">
+              {{ role.value }}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix>assignment_ind</mat-icon>
+          <mat-error *ngIf="inviteForm.get('roleInProject')?.hasError('required')">
+            Seleccione un rol
+          </mat-error>
+        </mat-form-field>
+
+        <div class="role-description" *ngIf="selectedRoleDescription">
+          <mat-icon>info</mat-icon>
+          <p>{{ selectedRoleDescription }}</p>
+        </div>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button
+        mat-button
+        type="button"
+        (click)="onCancel()"
+        [disabled]="isLoading">
+        Cancelar
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="inviteForm.invalid || isLoading">
+        <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+        <span *ngIf="!isLoading">Enviar invitación</span>
+        <span *ngIf="isLoading">Enviando...</span>
+      </button>
+    </mat-dialog-actions>
+  </form>

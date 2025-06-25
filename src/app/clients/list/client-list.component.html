@@ -1,0 +1,87 @@
+<div class="clients-container">
+  <div class="header-section">
+    <h1>Clientes</h1>
+    <a mat-raised-button class="btn_primary" routerLink="/clientes/nuevo">
+      <mat-icon>add</mat-icon> Nuevo Cliente
+    </a>
+  </div>
+
+  <mat-card class="filter-card">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar clientes</mat-label>
+      <input matInput [(ngModel)]="searchText" (keyup)="applyFilter()" placeholder="Nombre, email, teléfono...">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </mat-card>
+
+  <div *ngIf="isLoading" class="loading-spinner-container">
+    <mat-progress-spinner 
+      color="primary"
+      mode="indeterminate"
+      diameter="60">
+    </mat-progress-spinner>
+    <p>Cargando clientes...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="clients-list">
+    <ng-container *ngIf="filteredClients.length > 0; else noClients">
+      <div class="mat-elevation-z2 table-container">
+        <table mat-table [dataSource]="filteredClients" class="clients-table">
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let client">{{ client.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let client">{{ client.email || 'No disponible' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="contactPhone">
+            <th mat-header-cell *matHeaderCellDef>Teléfono</th>
+            <td mat-cell *matCellDef="let client">{{ client.contactPhone || 'No disponible' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="address">
+            <th mat-header-cell *matHeaderCellDef>Dirección</th>
+            <td mat-cell *matCellDef="let client">{{ client.address || 'No disponible' }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let client">
+              <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Acciones">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <a mat-menu-item [routerLink]="['/clientes', client.id]">
+                  <mat-icon>visibility</mat-icon>
+                  <span>Ver Detalles</span>
+                </a>
+                <a mat-menu-item [routerLink]="['/clientes', client.id, 'editar']">
+                  <mat-icon>edit</mat-icon>
+                  <span>Editar</span>
+                </a>
+                <button mat-menu-item (click)="deleteClient(client)">
+                  <mat-icon color="warn">delete</mat-icon>
+                  <span>Eliminar</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+    </ng-container>
+
+    <ng-template #noClients>
+      <div class="no-data-container">
+        <mat-icon>people_outline</mat-icon>
+        <p>No se encontraron clientes</p>
+        <a mat-raised-button color="primary" routerLink="/clientes/nuevo">Crear Nuevo Cliente</a>
+      </div>
+    </ng-template>
+  </div>
+</div> 

@@ -1,0 +1,92 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 320px;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+  letter-spacing: normal;
+  background-color: #F8FAFC;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  padding: 26px;
+  margin-top: 10px;
+}
+
+.logo-container {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 50%;
+  width: 40px; 
+  height: 40px;
+}
+
+.sidebar-title {
+  color: #0e141b;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+  margin: 0;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+}
+
+.sidebar-option {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  margin: 0;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+}
+
+.mat-toolbar.mat-primary {
+  gap: 12px;
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+
+mat-sidenav-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+.content {
+    flex-grow: 1;
+}
+
+.sidenav .mat-nav-list a[mat-list-item] {
+  margin: 4px 8px;
+  padding: 8px 12px !important;
+  border-radius: 22px;
+  color: #0e141b;
+}
+
+.sidenav .mat-nav-list a[mat-list-item] .mat-icon {
+  color: #0e141b;
+}
+
+.sidenav .mat-nav-list a[mat-list-item]:hover {
+  background-color: #f0f4f8; /* Un color de hover sutil */
+}
+
+/* Estilo para el ítem activo (requiere routerLinkActive) */
+.sidenav .mat-nav-list a[mat-list-item].active-link {
+  background-color: #E7EDF3 !important;
+  color: #0e141b !important;
+}
+
+.sidenav .mat-nav-list a[mat-list-item].active-link .mat-icon {
+  color: #0077ff !important;
+}

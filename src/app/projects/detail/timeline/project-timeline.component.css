@@ -1,0 +1,344 @@
+.timeline-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.header-content h2 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-content h2 mat-icon {
+  color: #2196F3;
+}
+
+.header-description {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+}
+
+.header-actions {
+  flex-shrink: 0;
+}
+
+/* Loading */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.loading-container p {
+  margin-top: 20px;
+  color: #666;
+}
+
+/* Formulario */
+.add-milestone-card {
+  margin-bottom: 30px;
+  border-left: 4px solid #2196F3;
+}
+
+.form-row {
+  margin-bottom: 20px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* Timeline */
+.timeline-content {
+  position: relative;
+}
+
+.timeline-list {
+  position: relative;
+  padding-left: 0;
+}
+
+.timeline-item {
+  display: flex;
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.timeline-marker {
+  position: relative;
+  flex-shrink: 0;
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+
+.timeline-marker mat-icon {
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 24px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timeline-marker mat-icon.milestone-completed {
+  background: #4CAF50;
+  color: white;
+}
+
+.timeline-marker mat-icon.milestone-progress {
+  background: #FF9800;
+  color: white;
+}
+
+.timeline-marker mat-icon.milestone-delayed {
+  background: #F44336;
+  color: white;
+}
+
+.timeline-marker mat-icon.milestone-pending {
+  background: #9E9E9E;
+  color: white;
+}
+
+.timeline-line {
+  width: 3px;
+  background: #E0E0E0;
+  flex: 1;
+  margin-top: 10px;
+  border-radius: 2px;
+}
+
+.timeline-content-item {
+  flex: 1;
+  margin-left: 20px;
+  margin-top: -8px;
+}
+
+.milestone-card {
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+  border-left: 4px solid #E0E0E0;
+}
+
+.milestone-card:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+}
+
+.milestone-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.milestone-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.milestone-name {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.milestone-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+}
+
+.milestone-date,
+.milestone-countdown {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #666;
+}
+
+.milestone-countdown.overdue {
+  color: #F44336;
+  font-weight: 500;
+}
+
+.milestone-countdown.overdue mat-icon {
+  color: #F44336;
+}
+
+.milestone-status {
+  flex-shrink: 0;
+}
+
+.status-chip {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Progreso */
+.milestone-progress {
+  margin: 16px 0;
+}
+
+.progress-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.progress-value {
+  font-weight: 600;
+  color: #2196F3;
+}
+
+/* Acciones */
+.milestone-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  border-top: 1px solid #F5F5F5;
+  padding-top: 16px;
+}
+
+.milestone-actions button {
+  font-size: 13px;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 80px 20px;
+  color: #666;
+}
+
+.empty-state-icon {
+  margin-bottom: 24px;
+}
+
+.empty-state-icon mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: #E0E0E0;
+}
+
+.empty-state h3 {
+  margin: 0 0 16px 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.empty-state p {
+  margin: 0 0 32px 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timeline-container {
+    padding: 16px;
+  }
+  
+  .timeline-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    align-self: flex-start;
+  }
+  
+  .timeline-marker {
+    width: 50px;
+  }
+  
+  .timeline-marker mat-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+  
+  .timeline-content-item {
+    margin-left: 16px;
+  }
+  
+  .milestone-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .milestone-actions {
+    flex-direction: column;
+  }
+  
+  .milestone-actions button {
+    width: 100%;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .form-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .milestone-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .timeline-marker {
+    width: 40px;
+  }
+  
+  .timeline-content-item {
+    margin-left: 12px;
+  }
+}

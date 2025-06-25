@@ -1,0 +1,49 @@
+<div class="projects-container">
+  <div class="header-section">
+    <h1>Proyectos</h1>
+    <a mat-raised-button class="btn_primary" routerLink="/proyectos/nuevo">
+      <mat-icon>add</mat-icon> Nuevo Proyecto
+    </a>
+  </div>
+
+  <mat-card class="filter-card">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Buscar proyectos</mat-label>
+      <input matInput [(ngModel)]="searchText" (keyup)="applyFilter()" placeholder="Nombre, cliente, ubicación...">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+  </mat-card>
+
+  <div *ngIf="isLoading" class="loading-spinner-container">
+    <mat-progress-spinner 
+      color="primary"
+      mode="indeterminate"
+      diameter="60">
+    </mat-progress-spinner>
+    <p>Cargando proyectos...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="projects-list">
+    <ng-container *ngIf="filteredProjects.length > 0; else noProjects">
+      <div class="projects-grid">
+        <app-project-card 
+          *ngFor="let project of filteredProjects" 
+          [project]="project"
+          [showImage]="true"
+          [showActions]="true"
+          [showProgress]="false"
+          [showEditButton]="true"
+          [compactMode]="false">
+        </app-project-card>
+      </div>
+    </ng-container>
+
+    <ng-template #noProjects>
+      <div class="no-data-container">
+        <mat-icon>business_center</mat-icon>
+        <p>No se encontraron proyectos</p>
+        <a mat-raised-button color="primary" routerLink="/proyectos/nuevo">Crear Nuevo Proyecto</a>
+      </div>
+    </ng-template>
+  </div>
+</div> 

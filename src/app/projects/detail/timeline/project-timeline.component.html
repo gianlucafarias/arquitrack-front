@@ -1,0 +1,177 @@
+<div class="timeline-container">
+  <div class="timeline-header">
+    <div class="header-content">
+      <h2>
+        Cronograma del Proyecto
+      </h2>
+      <p class="header-description">Gestiona los hitos y fechas clave del proyecto</p>
+    </div>
+    
+    <div class="header-actions">
+      <button 
+        mat-raised-button 
+        class="btn_primary" 
+        (click)="toggleAddMilestoneForm()"
+        [disabled]="isLoading">
+        <mat-icon>{{ showAddMilestoneForm ? 'close' : 'add' }}</mat-icon>
+        {{ showAddMilestoneForm ? 'Cancelar' : 'Nuevo Hito' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-progress-spinner color="primary" mode="indeterminate" diameter="50"></mat-progress-spinner>
+    <p>Cargando cronograma...</p>
+  </div>
+
+  <!-- Formulario para crear nuevo hito -->
+  <mat-card *ngIf="showAddMilestoneForm && !isLoading" class="add-milestone-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>add_circle</mat-icon>
+        Crear Nuevo Hito
+      </mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="milestoneForm" (ngSubmit)="onSubmitMilestone()">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Nombre del hito</mat-label>
+            <input matInput formControlName="name" placeholder="Ej: Finalización de cimientos">
+            <mat-icon matSuffix>flag</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea 
+              matInput 
+              formControlName="description" 
+              rows="3"
+              placeholder="Describe los objetivos y entregables de este hito...">
+            </textarea>
+            <mat-icon matSuffix>description</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Fecha objetivo</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="targetDate">
+            <mat-hint>Fecha estimada de finalización</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            type="submit"
+            [disabled]="milestoneForm.invalid">
+            <mat-icon>save</mat-icon>
+            Crear Hito
+          </button>
+          <button 
+            mat-button 
+            type="button" 
+            (click)="toggleAddMilestoneForm()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <!-- Timeline content -->
+  <div *ngIf="!isLoading" class="timeline-content">
+    
+    <!-- Timeline con hitos -->
+    <div *ngIf="timelineItems.length > 0" class="timeline-list">
+      <div class="timeline-item" *ngFor="let item of timelineItems; let last = last">
+        <div class="timeline-marker">
+          <mat-icon 
+            [color]="getStatusColor(item.status)"
+            [class.milestone-completed]="item.status === 'COMPLETED'"
+            [class.milestone-delayed]="item.isOverdue"
+            [class.milestone-pending]="item.status === 'PENDING'"
+            [class.milestone-progress]="item.status === 'IN_PROGRESS'">
+            {{ getStatusIcon(item.status) }}
+          </mat-icon>
+          <div *ngIf="!last" class="timeline-line"></div>
+        </div>
+
+        <div class="timeline-content-item">
+          <mat-card class="milestone-card">
+            <mat-card-content>
+              <div class="milestone-header">
+                <div class="milestone-info">
+                  <h3 class="milestone-name">{{ item.name }}</h3>
+                  <div class="milestone-meta">
+                    <div class="milestone-date">
+                      <mat-icon>event</mat-icon>
+                      <span>{{ formatDate(item.targetDate) }}</span>
+                    </div>
+                    <div class="milestone-countdown" [class.overdue]="item.isOverdue">
+                      <mat-icon>{{ item.isOverdue ? 'warning' : 'schedule' }}</mat-icon>
+                      <span>{{ getDaysText(item.daysUntilDeadline) }}</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="milestone-status">
+                  <mat-chip 
+                    [color]="getStatusColor(item.status)"
+                    class="status-chip">
+                    {{ milestoneStatusLabels[item.status] }}
+                  </mat-chip>
+                </div>
+              </div>
+
+             
+
+              <!-- Acciones del hito -->
+              <div class="milestone-actions" *ngIf="item.status !== 'COMPLETED'">
+                <button 
+                  mat-button 
+                  color="primary"
+                  (click)="completeMilestoneById(item.id)">
+                  <mat-icon>check_circle</mat-icon>
+                  Marcar como completado
+                </button>
+                <button 
+                  mat-button 
+                  color="warn"
+                  (click)="deleteMilestoneById(item.id)">
+                  <mat-icon>delete</mat-icon>
+                  Eliminar
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estado vacío -->
+    <div *ngIf="timelineItems.length === 0" class="empty-state">
+      <div class="empty-state-icon">
+        <mat-icon>timeline</mat-icon>
+      </div>
+      <h3>No hay hitos definidos</h3>
+      <p>Crea el primer hito para comenzar a planificar el cronograma del proyecto.</p>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="toggleAddMilestoneForm()"
+        *ngIf="!showAddMilestoneForm">
+        <mat-icon>add</mat-icon>
+        Crear Primer Hito
+      </button>
+    </div>
+  </div>
+</div>

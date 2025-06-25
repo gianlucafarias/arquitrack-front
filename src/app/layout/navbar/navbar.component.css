@@ -1,4 +1,32 @@
 .spacer {
   flex: 1 1 auto;
+  padding: 0 26px;
 }
 
+.mat-toolbar {
+    padding: 20px 16px;
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-menu {
+    padding: 10px;
+    margin-right: 16px;
+}
+
+.notifications-button {
+    margin-right: 16px;
+    background-color: #fff;
+}
+
+
+.user-name {
+    color: primary;
+}

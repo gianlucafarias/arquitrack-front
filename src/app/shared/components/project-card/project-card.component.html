@@ -1,0 +1,71 @@
+<!-- Tarjeta de proyecto -->
+<mat-card class="project-card" [class.compact-mode]="compactMode" (click)="onProjectClick()">
+  <!-- Imagen de portada (opcional) -->
+  <div *ngIf="showImage" class="project-card-cover" [routerLink]="['/proyectos', project.id]">
+    <img [src]="getProjectMainImage()" alt="Imagen del proyecto" [class.placeholder-image]="!hasProjectImages()">
+    <div class="project-status-overlay">
+      <span class="status-chip" [ngClass]="getStatusClass(project.status)">
+        {{ getStatusLabel(project.status) }}
+      </span>
+    </div>
+  </div>
+  
+  <!-- Contenido de la tarjeta -->
+  <mat-card-content [class.compact-content]="compactMode">
+    <h2 class="project-title" [routerLink]="['/proyectos', project.id]" [class.compact-title]="compactMode">
+      {{ project.name }}
+    </h2>
+    
+    <!-- Estado para modo compacto sin imagen -->
+    <div *ngIf="!showImage" class="status-section">
+      <span class="status-chip" [ngClass]="getStatusClass(project.status)">
+        {{ getStatusLabel(project.status) }}
+      </span>
+    </div>
+    
+    <div class="project-details" [class.compact-details]="compactMode">
+      <!-- Cliente -->
+      <div class="detail-item">
+        <mat-icon>person</mat-icon>
+        <span>{{ project.client?.name || 'Sin asignar' }}</span>
+      </div>
+      
+      <!-- Ubicación -->
+      <div class="detail-item" *ngIf="project.location">
+        <mat-icon>place</mat-icon>
+        <span>{{ project.location }}</span>
+      </div>
+
+      <!-- Progreso (opcional) -->
+      <div *ngIf="showProgress" class="progress-section">
+        <div class="progress-header">
+          <span>Progreso</span>
+          <span class="progress-value">{{ project.progressPercent || 0 }}%</span>
+        </div>
+        <mat-progress-bar 
+          [color]="getProgressColor(project.progressPercent)" 
+          mode="determinate" 
+          [value]="project.progressPercent || 0">
+        </mat-progress-bar>
+      </div>
+
+      <!-- Información adicional para dashboard -->
+      <div *ngIf="project.taskCount !== undefined" class="task-info">
+        <div class="detail-item">
+          <mat-icon>task_alt</mat-icon>
+          <span>{{ project.completedTaskCount || 0 }} / {{ project.taskCount || 0 }} tareas</span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  
+  <!-- Acciones (opcional) -->
+  <mat-card-actions *ngIf="showActions" [class.compact-actions]="compactMode">
+    <a mat-button [routerLink]="['/proyectos', project.id]" color="primary" (click)="$event.stopPropagation()">
+      <mat-icon>visibility</mat-icon> Ver
+    </a>
+    <a *ngIf="showEditButton" mat-button [routerLink]="['/proyectos', project.id, 'editar']" color="accent" (click)="$event.stopPropagation()">
+      <mat-icon>edit</mat-icon> Editar
+    </a>
+  </mat-card-actions>
+</mat-card>

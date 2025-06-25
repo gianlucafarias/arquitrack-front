@@ -1,12 +1,26 @@
-<mat-toolbar color="primary">
-  <a mat-button routerLink="/">Arquitrack</a>
+<mat-toolbar class="mat-elevation-z4">
+  <button mat-icon-button (click)="onToggleSidenav()" aria-label="Toggle Sidenav">
+    <mat-icon>menu</mat-icon>
+  </button>
   <span class="spacer"></span>
   <ng-container *ngIf="authService.isAuthenticated()">
-    <a mat-button routerLink="/proyectos">Proyectos</a>
-    <a mat-button routerLink="/clientes">Clientes</a>
-    <button mat-icon-button (click)="logout()" aria-label="Logout">
-      <mat-icon>exit_to_app</mat-icon>
-    </button>
+    <app-notifications-menu></app-notifications-menu>
+
+      <div class="user-menu">
+      <button mat-icon-button class="user-button" [matMenuTriggerFor]="userMenu" aria-label="Usuario">
+        <mat-icon>person</mat-icon>
+      </button>
+      <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="viewProfile()">
+          <mat-icon>account_circle</mat-icon>
+          <span>Mi Perfil</span>
+        </button>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Cerrar Sesión</span>
+        </button>
+      </mat-menu>
+    </div>
   </ng-container>
   <ng-container *ngIf="!authService.isAuthenticated()">
     <a mat-button routerLink="/auth/login">Login</a>

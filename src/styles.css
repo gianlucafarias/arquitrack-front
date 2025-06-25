@@ -3,4 +3,104 @@
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: "Noto Sans", "Helvetica Neue", sans-serif !important; letter-spacing: normal !important; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Inter", "Helvetica Neue", sans-serif !important;
+  letter-spacing: normal !important;
+}
+
+html {
+  /* Variables para text buttons */
+  --mdc-text-button-label-text-font: "Inter", "Helvetica Neue", sans-serif !important;
+  --mdc-text-button-label-text-tracking: normal !important;
+
+  /* Variables para filled buttons (mat-flat-button, mat-unelevated-button) */
+  --mdc-filled-button-label-text-font: "Inter", "Helvetica Neue", sans-serif !important;
+  --mdc-filled-button-label-text-tracking: normal !important;
+
+  /* Variables para outlined buttons (mat-stroked-button) */
+  --mdc-outlined-button-label-text-font: "Inter", "Helvetica Neue", sans-serif !important;
+  --mdc-outlined-button-label-text-tracking: normal !important;
+
+  /* Variables para raised buttons (mat-raised-button) */
+  --mdc-protected-button-label-text-font: "Inter", "Helvetica Neue", sans-serif !important;
+  --mdc-protected-button-label-text-tracking: normal !important;
+
+  /* Variables para FABs (mat-fab, mat-mini-fab) y extended FABs */
+  --mdc-extended-fab-label-text-font: "Inter", "Helvetica Neue", sans-serif !important;
+  /* Asumimos que el tracking de FAB se hereda o --mdc-extended-fab-label-text-tracking podría existir si es necesario */
+  --primary-color: #0E141B;
+  --secondary-color: #E7EDF3;
+  --tertiary-color: #eaeaea;
+  --quaternary-color: #f8f8f8;
+  --quinary-color: #d0d0d0;
+  --senary-color: #f0f0f0;
+  --septenary-color: #e0e0e0;
+}
+
+/* Estilos para notificaciones */
+.error-snackbar {
+  background-color: #d32f2f !important;
+  color: white !important;
+}
+
+.error-snackbar .mat-simple-snackbar-action {
+  color: white !important;
+}
+
+/* Estilos globales para el menú de notificaciones */
+.mat-mdc-menu-panel.notifications-menu {
+  max-width: none !important;
+  width: 680px !important;
+  min-width: 680px !important;
+}
+
+.cdk-overlay-pane:has(.notifications-menu) {
+  max-width: none !important;
+}
+
+.search-field {
+  width: 100%;
+  margin-top: 15px;
+  padding-right: 10px;
+  padding-left: 10px;
+  box-sizing: border-box;
+}
+
+.btn_primary{
+  background-color: #0E141B !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  height: 44px !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  line-height: 1.5 !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  transition: all 0.3s ease;
+}
+
+.btn_primary:hover{
+  background-color: #0e141bde !important;
+  color: #fff !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+}
+
+
+.main-dialog-container {
+  border-radius: 15px;
+  overflow: hidden;
+  width: 100%;
+  z-index: 2;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+.a {
+  text-decoration: none;
+  color: #0E141B;
+  font-weight: 700;
+}

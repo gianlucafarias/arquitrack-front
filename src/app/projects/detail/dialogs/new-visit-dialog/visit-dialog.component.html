@@ -1,0 +1,65 @@
+<div class="main-dialog-container">
+<h2 mat-dialog-title>Registrar nueva visita de obra</h2>
+<mat-dialog-content>
+  <form [formGroup]="visitForm" class="visit-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Fecha de visita</mat-label>
+      <input matInput [matDatepicker]="visitPicker" formControlName="date">
+      <mat-datepicker-toggle matSuffix [for]="visitPicker"></mat-datepicker-toggle>
+      <mat-datepicker #visitPicker></mat-datepicker>
+      <mat-error *ngIf="visitForm.get('date')?.hasError('required')">
+        La fecha es obligatoria
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Notas de la visita</mat-label>
+      <textarea matInput formControlName="notes" rows="4" placeholder="Detalles de la visita, observaciones, estado del proyecto..."></textarea>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Referencias de fotos</mat-label>
+      <textarea matInput formControlName="photoReferences" rows="2" placeholder="Ej: foto001.jpg, foto002.jpg, descripción de imágenes tomadas..."></textarea>
+    </mat-form-field>
+
+    <div class="images-section">
+      <label class="images-label">Imágenes de la visita</label>
+      <div class="selected-images" *ngIf="selectedImages.length > 0">
+        <div class="image-preview" *ngFor="let image of selectedImages; let i = index">
+          <img [src]="image.preview" alt="Vista previa">
+          <button mat-icon-button color="warn" type="button" (click)="removeImage(i)" [disabled]="isUploading">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <button type="button" 
+              mat-stroked-button 
+              color="primary" 
+              (click)="fileInput.click()"
+              [disabled]="isUploading">
+        <mat-icon>add_photo_alternate</mat-icon> 
+        {{ selectedImages.length > 0 ? 'Agregar más imágenes' : 'Agregar imágenes' }}
+      </button>
+      <input hidden 
+             type="file" 
+             #fileInput 
+             accept="image/*" 
+             multiple 
+             (change)="onFileSelected($event)">
+      <div class="upload-info" *ngIf="selectedImages.length > 0">
+        <span class="image-count">{{ selectedImages.length }} imagen(es) seleccionada(s)</span>
+        <span class="upload-note">Máximo 5MB por imagen</span>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close [disabled]="isUploading">Cancelar</button>
+  <button mat-raised-button class="btn_primary"
+          [disabled]="visitForm.invalid || isUploading" 
+          (click)="saveVisit()">
+    <mat-spinner diameter="20" *ngIf="isUploading"></mat-spinner>
+    {{ isUploading ? 'Subiendo...' : 'Registrar Visita' }}
+  </button>
+</mat-dialog-actions>
+</div>

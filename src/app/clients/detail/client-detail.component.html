@@ -1,0 +1,94 @@
+<div class="client-detail-container">
+  <div class="header-section">
+    <h1>Detalles del Cliente</h1>
+    <div class="actions">
+      <a mat-button routerLink="/clientes">
+        <mat-icon>arrow_back</mat-icon> Volver a la lista
+      </a>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-spinner-container">
+    <mat-progress-spinner 
+      color="primary"
+      mode="indeterminate"
+      diameter="60">
+    </mat-progress-spinner>
+    <p>Cargando detalles del cliente...</p>
+  </div>
+
+  <div *ngIf="!isLoading && client" class="client-content">
+    <mat-card class="client-card">
+      <mat-card-header>
+        <div mat-card-avatar class="client-avatar">
+          <mat-icon>person</mat-icon>
+        </div>
+        <mat-card-title>{{ client.name }}</mat-card-title>
+        <mat-card-subtitle *ngIf="client.email">{{ client.email }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <mat-divider></mat-divider>
+        
+        <div class="info-section">
+          <h2>Información de Contacto</h2>
+          
+          <div class="info-item" *ngIf="client.contactPhone">
+            <mat-icon>phone</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Teléfono:</span>
+              <span class="info-value">{{ client.contactPhone }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item" *ngIf="client.email">
+            <mat-icon>email</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Email:</span>
+              <span class="info-value">{{ client.email }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item" *ngIf="client.address">
+            <mat-icon>location_on</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Dirección:</span>
+              <span class="info-value">{{ client.address }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon>calendar_today</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Fecha de creación:</span>
+              <span class="info-value">{{ client.createdAt | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <mat-icon>update</mat-icon>
+            <div class="info-content">
+              <span class="info-label">Última actualización:</span>
+              <span class="info-value">{{ client.updatedAt | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <a mat-button [routerLink]="['/clientes', client.id, 'editar']" color="primary">
+          <mat-icon>edit</mat-icon> Editar
+        </a>
+        <button mat-button color="warn" (click)="deleteClient()">
+          <mat-icon>delete</mat-icon> Eliminar
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <div *ngIf="!isLoading && !client" class="no-data-container">
+    <mat-icon>error_outline</mat-icon>
+    <p>No se pudo encontrar el cliente solicitado</p>
+    <a mat-raised-button color="primary" routerLink="/clientes">Volver a la lista de clientes</a>
+  </div>
+</div> 

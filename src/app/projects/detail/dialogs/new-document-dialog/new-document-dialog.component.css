@@ -1,0 +1,105 @@
+.dialog-container {
+    min-width: 500px;
+    max-width: 600px;
+  }
+
+  .document-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .file-selection-section {
+    margin-bottom: 10px;
+  }
+
+  .file-input-container {
+    margin-bottom: 15px;
+  }
+
+  .file-preview {
+    border: 2px dashed #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    background-color: #fafafa;
+  }
+
+  .file-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .file-preview-item mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .file-details {
+    flex: 1;
+  }
+
+  .file-name {
+    font-weight: 500;
+    color: #2c3e50;
+    margin-bottom: 4px;
+  }
+
+  .file-size, .file-type {
+    font-size: 0.85em;
+    color: #666;
+  }
+
+  .upload-info {
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+
+  .validation-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9em;
+  }
+
+  .validation-status mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  mat-dialog-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  mat-dialog-title mat-icon {
+    color: #1976d2;
+  }
+
+  mat-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  mat-spinner {
+    margin-right: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .dialog-container {
+      min-width: 90vw;
+      max-width: 95vw;
+    }
+  }

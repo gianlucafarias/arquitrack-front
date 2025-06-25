@@ -1,0 +1,249 @@
+<div class="project-form-container">
+  <div class="header-section">
+    <h1>{{ isEditing ? 'Editar Proyecto' : 'Nuevo Proyecto' }}</h1>
+    <a mat-button routerLink="/proyectos">
+      <mat-icon>arrow_back</mat-icon> Volver a la lista
+    </a>
+  </div>
+
+  <mat-card class="form-card">
+    <mat-progress-bar *ngIf="isLoading" mode="indeterminate"></mat-progress-bar>
+    
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()" *ngIf="!isLoading">
+      <mat-card-content>
+        <div class="form-fields">
+          <!-- Nombre del proyecto -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nombre del proyecto</mat-label>
+            <input matInput formControlName="name" placeholder="Ej. Residencia Familia Pérez">
+            <mat-icon matSuffix>business</mat-icon>
+            <mat-error *ngIf="projectForm.get('name')?.hasError('required')">
+              El nombre es obligatorio
+            </mat-error>
+            <mat-error *ngIf="projectForm.get('name')?.hasError('minlength')">
+              El nombre debe tener al menos 3 caracteres
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Cliente -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Cliente</mat-label>
+            <mat-select formControlName="clientId">
+              <mat-option *ngIf="clientsLoading">Cargando clientes...</mat-option>
+              <mat-option *ngFor="let client of clients" [value]="client.id">
+                {{ client.name }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="projectForm.get('clientId')?.hasError('required')">
+              Debe seleccionar un cliente
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Ubicación -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Ubicación</mat-label>
+            <input matInput formControlName="location" placeholder="Ej. Av. Principal 123, Ciudad">
+            <mat-icon matSuffix>location_on</mat-icon>
+          </mat-form-field>
+
+          <!-- Fechas (start y estimated end) en una fila -->
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="form-field-half">
+              <mat-label>Fecha de inicio</mat-label>
+              <input matInput [matDatepicker]="startPicker" formControlName="startDate">
+              <mat-datepicker-toggle matSuffix [for]="startPicker"></mat-datepicker-toggle>
+              <mat-datepicker #startPicker></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="form-field-half">
+              <mat-label>Fecha estimada de finalización</mat-label>
+              <input matInput [matDatepicker]="endPicker" formControlName="estimatedEndDate">
+              <mat-datepicker-toggle matSuffix [for]="endPicker"></mat-datepicker-toggle>
+              <mat-datepicker #endPicker></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <!-- Presupuesto inicial -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Presupuesto inicial</mat-label>
+            <input matInput type="number" formControlName="initialBudget" placeholder="Ej. 150000">
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-error *ngIf="projectForm.get('initialBudget')?.hasError('min')">
+              El presupuesto no puede ser negativo
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Estado del proyecto -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Estado del proyecto</mat-label>
+            <mat-select formControlName="status">
+              <mat-option *ngFor="let statusOption of projectStatusOptions" [value]="statusOption.key">
+                {{ statusOption.value }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>bookmark</mat-icon>
+          </mat-form-field>
+
+          <!-- Progreso -->
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Progreso (%)</mat-label>
+            <input matInput type="number" formControlName="progress" placeholder="Ej. 25">
+            <mat-icon matSuffix>trending_up</mat-icon>
+            <mat-error *ngIf="projectForm.get('progress')?.hasError('min')">
+              El progreso no puede ser menor a 0
+            </mat-error>
+            <mat-error *ngIf="projectForm.get('progress')?.hasError('max')">
+              El progreso no puede ser mayor a 100
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-divider class="section-divider"></mat-divider>
+
+        <!-- Sección de Imágenes -->
+        <div class="images-section">
+          <h3 class="section-title">
+            <mat-icon>photo_library</mat-icon>
+            Imágenes del Proyecto
+          </h3>
+          <p class="section-description">
+            Sube una imagen principal y fotos adicionales del proyecto. Puedes agregar descripciones para cada imagen.
+          </p>
+
+          <!-- Imagen Principal -->
+          <div class="main-image-section">
+            <h4>Imagen Principal (Portada)</h4>
+            
+            <div class="main-image-upload" 
+                 [class.has-image]="mainImageUrl"
+                 [class.drag-over]="dragOver"
+                 (dragover)="onDragOver($event)"
+                 (dragleave)="onDragLeave($event)"
+                 (drop)="onDrop($event)">
+              
+              <!-- Vista cuando no hay imagen principal -->
+              <div *ngIf="!mainImageUrl" class="upload-placeholder" (click)="mainImageInput.click()">
+                <mat-icon class="upload-icon">add_photo_alternate</mat-icon>
+                <p><strong>Selecciona imagen principal</strong></p>
+                <p class="upload-hint">Arrastra aquí o haz clic para seleccionar</p>
+                <small>JPG, PNG, GIF, WEBP (máx. 10MB)</small>
+              </div>
+
+              <!-- Vista con imagen principal -->
+              <div *ngIf="mainImageUrl" class="main-image-preview">
+                <img [src]="mainImageUrl" alt="Imagen principal">
+                <div class="image-overlay">
+                  <button mat-icon-button (click)="mainImageInput.click()" matTooltip="Cambiar imagen">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="removeImage(getMainImageIndex())" matTooltip="Eliminar imagen">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+
+              <input #mainImageInput
+                     type="file"
+                     accept="image/*"
+                     (change)="onMainImageSelected($event)"
+                     style="display: none;">
+            </div>
+          </div>
+
+          <!-- Galería de Imágenes Adicionales -->
+          <div class="additional-images-section">
+            <div class="additional-images-header">
+              <h4>Imágenes Adicionales</h4>
+              <button mat-raised-button color="primary" type="button" (click)="additionalImagesInput.click()">
+                <mat-icon>add</mat-icon>
+                Agregar Imágenes
+              </button>
+            </div>
+
+            <input #additionalImagesInput
+                   type="file"
+                   accept="image/*"
+                   multiple
+                   (change)="onImagesSelected($event)"
+                   style="display: none;">
+
+            <!-- Lista de imágenes adicionales -->
+            <div *ngIf="hasAdditionalImages()" class="images-grid">
+              <mat-expansion-panel *ngFor="let image of getAdditionalImages(); let i = index" 
+                                   class="image-panel">
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <div class="image-panel-title">
+                      <img [src]="getImagePreviewUrl(image)" [alt]="image.fileName" class="thumbnail">
+                      <div class="image-info">
+                        <span class="filename">{{ image.fileName }}</span>
+                        <span class="filesize">{{ getFileSize(image) }}</span>
+                        <mat-chip *ngIf="image.isMain" color="primary" class="main-chip">Principal</mat-chip>
+                      </div>
+                    </div>
+                  </mat-panel-title>
+                  <mat-panel-description *ngIf="image.uploading">
+                    <mat-icon class="uploading-icon">cloud_upload</mat-icon>
+                    Subiendo...
+                  </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="image-details">
+                  <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput 
+                              [value]="image.description"
+                              (input)="updateImageDescriptionByImage(image, $any($event.target).value)"
+                              placeholder="Describe esta imagen..."
+                              rows="2"></textarea>
+                    <mat-icon matSuffix>description</mat-icon>
+                  </mat-form-field>
+
+                  <div class="image-actions">
+                    <button mat-button 
+                            *ngIf="!image.isMain" 
+                            (click)="setAsMainImageByImage(image)"
+                            type="button">
+                      <mat-icon>star</mat-icon>
+                      Establecer como Principal
+                    </button>
+                    
+                    <button mat-button 
+                            color="warn" 
+                            (click)="removeImageByImage(image)"
+                            type="button">
+                      <mat-icon>delete</mat-icon>
+                      Eliminar
+                    </button>
+                  </div>
+                </div>
+              </mat-expansion-panel>
+            </div>
+
+            <!-- Mensaje cuando no hay imágenes adicionales -->
+            <div *ngIf="!hasAdditionalImages()" class="no-additional-images">
+              <mat-icon>photo_library</mat-icon>
+              <p>No hay imágenes adicionales</p>
+              <small>Puedes agregar fotos del progreso, detalles específicos, planos, etc.</small>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+
+      <mat-card-actions>
+        <button mat-button type="button" routerLink="/proyectos">Cancelar</button>
+        <button 
+          mat-raised-button 
+          class="btn_primary" 
+          type="submit" 
+          [disabled]="projectForm.invalid || submitLoading">
+          <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>
+          {{ isEditing ? 'Actualizar' : 'Crear' }} Proyecto
+        </button>
+      </mat-card-actions>
+      
+      <mat-progress-bar *ngIf="submitLoading" mode="indeterminate"></mat-progress-bar>
+    </form>
+  </mat-card>
+</div> 

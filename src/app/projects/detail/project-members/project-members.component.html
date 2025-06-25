@@ -1,0 +1,181 @@
+<div class="members-section">
+    <div class="members-header">
+      <h2>Miembros del proyecto</h2>
+      <button 
+    mat-raised-button 
+    class="btn_primary" 
+    (click)="openInviteDialog()"
+    *ngIf="canManageMembers">
+    <mat-icon>person_add</mat-icon>
+    Invitar usuario
+      </button>
+    </div>
+<mat-card>
+
+<mat-card-content>
+<mat-tab-group>
+  <mat-tab>
+    <ng-template mat-tab-label>
+      <mat-icon>people</mat-icon>
+      Miembros ({{ members.length }})
+    </ng-template>
+    
+    <div class="tab-content">
+      <div *ngIf="isLoadingMembers" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Cargando miembros...</p>
+      </div>
+
+      <div *ngIf="!isLoadingMembers && members.length === 0" class="empty-state">
+        <mat-icon>group_off</mat-icon>
+        <p>No hay miembros en este proyecto aún</p>
+        <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="openInviteDialog()"
+    *ngIf="canManageMembers">
+    Invitar primer usuario
+      </button>
+      </div>
+
+      <div *ngIf="!isLoadingMembers && members.length > 0" class="members-table">
+        <table mat-table [dataSource]="members" class="full-width">
+          <ng-container matColumnDef="user">
+            <th mat-header-cell *matHeaderCellDef>Usuario</th>
+            <td mat-cell *matCellDef="let member">
+              <div class="user-info">
+                <mat-icon>person</mat-icon>
+                <div>
+                  <div class="user-name">{{ member.user.name || member.user.email }}</div>
+                  <div class="user-email">{{ member.user.email }}</div>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef>Rol</th>
+            <td mat-cell *matCellDef="let member">
+              <mat-chip [color]="getRoleColor(member.roleInProject)">
+                {{ getRoleLabel(member.roleInProject) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let member">
+              <mat-chip [color]="getStatusColor(member.invitationStatus)">
+                {{ getStatusLabel(member.invitationStatus) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="joinedAt">
+            <th mat-header-cell *matHeaderCellDef>Fecha de ingreso</th>
+            <td mat-cell *matCellDef="let member">
+              {{ formatDate(member.joinedAt) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let member">
+              <button 
+                mat-icon-button 
+                [matMenuTriggerFor]="memberMenu"
+                *ngIf="canManageMembers && member.userId !== currentUserId">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #memberMenu="matMenu">
+                <button mat-menu-item (click)="removeMember(member)">
+                  <mat-icon>person_remove</mat-icon>
+                  <span>Remover del proyecto</span>
+                </button>
+              </mat-menu>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="memberColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: memberColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </mat-tab>
+
+  <mat-tab *ngIf="canManageMembers">
+    <ng-template mat-tab-label>
+      <mat-icon>mail</mat-icon>
+      Invitaciones ({{ invitations.length }})
+    </ng-template>
+    
+    <div class="tab-content">
+      <div *ngIf="isLoadingInvitations" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Cargando invitaciones...</p>
+      </div>
+
+      <div *ngIf="!isLoadingInvitations && invitations.length === 0" class="empty-state">
+        <mat-icon>mail_outline</mat-icon>
+        <p>No hay invitaciones pendientes</p>
+      </div>
+
+      <div *ngIf="!isLoadingInvitations && invitations.length > 0" class="invitations-table">
+        <table mat-table [dataSource]="invitations" class="full-width">
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let invitation">
+              <div class="email-info">
+                <mat-icon>email</mat-icon>
+                {{ invitation.email }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="invitationRole">
+            <th mat-header-cell *matHeaderCellDef>Rol</th>
+            <td mat-cell *matCellDef="let invitation">
+              <mat-chip [color]="getRoleColor(invitation.roleInProject)">
+                {{ getRoleLabel(invitation.roleInProject) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="invitationStatus">
+            <th mat-header-cell *matHeaderCellDef>Estado</th>
+            <td mat-cell *matCellDef="let invitation">
+              <mat-chip [color]="getStatusColor(invitation.invitationStatus)">
+                {{ getStatusLabel(invitation.invitationStatus) }}
+              </mat-chip>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Fecha de invitación</th>
+            <td mat-cell *matCellDef="let invitation">
+              {{ formatDate(invitation.createdAt) }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="invitationActions">
+            <th mat-header-cell *matHeaderCellDef>Acciones</th>
+            <td mat-cell *matCellDef="let invitation">
+              <button 
+                mat-icon-button 
+                (click)="cancelInvitation(invitation)"
+                *ngIf="invitation.invitationStatus === InvitationStatus.PENDING"
+                matTooltip="Cancelar invitación">
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="invitationColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: invitationColumns;"></tr>
+        </table>
+      </div>
+    </div>
+  </mat-tab>
+</mat-tab-group>
+</mat-card-content>
+</mat-card>

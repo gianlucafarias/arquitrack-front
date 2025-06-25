@@ -1,0 +1,136 @@
+<div class="dashboard-container" *ngIf="!isLoading && summaryData; else loading">
+  <h1>Panel de Control</h1>
+
+  <div *ngIf="error" class="error-message">
+    <mat-card color="warn">
+      <mat-card-content>
+        <mat-icon>error</mat-icon>
+        <p>{{ error }}</p>
+        <button mat-button (click)="refreshData()">Reintentar</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <app-pending-invitations></app-pending-invitations>
+
+
+  <div class="summary-cards" *ngIf="summaryData">
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-card-title>Clientes Totales</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="stat-number">{{ summaryData.totalClients }}</p>
+        <mat-icon>groups</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-card-title>Proyectos Totales</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="stat-number">{{ summaryData.totalProjects }}</p>
+        <mat-icon>business_center</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-card-title>Proyectos Activos</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="stat-number">{{ summaryData.activeProjects }}</p>
+        <mat-icon>construction</mat-icon>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="summary-card">
+      <mat-card-header>
+        <mat-card-title>Progreso de Tareas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p class="stat-number">{{ summaryData.completedTasks }} / {{ summaryData.totalTasks }}</p>
+        <mat-icon>task_alt</mat-icon>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-container *ngIf="summaryData">
+    <mat-tab-group>
+       <ng-template matTabLabel>
+        <mat-icon>home</mat-icon>
+       </ng-template>
+      <mat-tab style="letter-spacing: 0.4px;" label="Mis Proyectos ({{ summaryData.ownProjects.length }})" [disabled]="false">
+        <ng-template matTabContent>
+          <div class="tab-content">
+            <div class="section-header">
+              <p>Proyectos donde eres el arquitecto propietario</p>
+            </div>
+            
+            <div class="projects-grid" *ngIf="summaryData.ownProjects.length > 0; else noOwnProjects">
+              <app-project-card 
+                *ngFor="let project of summaryData.ownProjects" 
+                [project]="project"
+                [showImage]="true"
+                [showActions]="true"
+                [showProgress]="true"
+                [showEditButton]="true"
+                [compactMode]="false">
+              </app-project-card>
+            </div>
+            
+            <ng-template #noOwnProjects>
+              <div class="no-data-container">
+                <mat-icon>assignment_late</mat-icon>
+                <p>No tienes proyectos propios activos en este momento.</p>
+                <a mat-raised-button color="primary" routerLink="/proyectos/nuevo">Crear Nuevo Proyecto</a>
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+      </mat-tab>
+
+      <mat-tab label="Colaboraciones ({{ summaryData.memberProjects.length }})" [disabled]="false">
+        <ng-template matTabContent>
+          <div class="tab-content">
+            <div class="section-header">
+              <p>Proyectos donde participas como miembro del equipo</p>
+            </div>
+            
+            <div class="projects-grid" *ngIf="summaryData.memberProjects.length > 0; else noMemberProjects">
+              <app-project-card 
+                *ngFor="let project of summaryData.memberProjects" 
+                [project]="project"
+                [showImage]="true"
+                [showActions]="true"
+                [showProgress]="true"
+                [showEditButton]="project.roleInProject === ProjectRole.MEMBER || project.roleInProject === ProjectRole.COLLABORATOR"
+                [compactMode]="false">
+              </app-project-card>
+            </div>
+            
+            <ng-template #noMemberProjects>
+              <div class="no-data-container">
+                <mat-icon>group</mat-icon>
+                <p>No estás colaborando en ningún proyecto en este momento.</p>
+              </div>
+            </ng-template>
+          </div>
+        </ng-template>
+      </mat-tab>
+    </mat-tab-group>
+  </ng-container>
+
+</div>
+
+<ng-template #loading>
+  <div class="loading-spinner-container">
+    <mat-progress-spinner 
+      color="primary"
+      mode="indeterminate"
+      diameter="60">
+    </mat-progress-spinner>
+    <p>Cargando panel de control...</p>
+  </div>
+</ng-template>

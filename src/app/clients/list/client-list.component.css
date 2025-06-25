@@ -1,0 +1,123 @@
+.clients-container {
+  padding: 25px;
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 64px);
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.header-section h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 500;
+  color: #2c3e50;
+  border-left: 5px solid #34495e;
+  padding-left: 15px;
+}
+
+.filter-card {
+  margin-bottom: 25px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.clients-list {
+  margin-top: 25px;
+}
+
+.clients-table {
+  width: 100%;
+}
+
+.table-container {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mat-mdc-row {
+  transition: background-color 0.2s ease;
+}
+
+.mat-mdc-row:hover {
+  background-color: #f5f5f5;
+}
+
+.mat-mdc-header-cell {
+  background-color: #f8f9fa;
+  color: #34495e;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 15px;
+}
+
+.mat-mdc-cell {
+  padding: 15px;
+  color: #34495e;
+}
+
+/* Pantalla de carga */
+.loading-spinner-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 300px;
+  color: #34495e;
+}
+
+.loading-spinner-container p {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: 500;
+}
+
+/* Mensaje cuando no hay clientes */
+.no-data-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  text-align: center;
+  margin: 20px 0;
+}
+
+.no-data-container mat-icon {
+  font-size: 3em;
+  width: auto;
+  height: auto;
+  color: #bdbdbd;
+  margin-bottom: 15px;
+}
+
+.no-data-container p {
+  color: #616161;
+  font-size: 1.2em;
+  margin: 10px 0 20px;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-section h1 {
+    margin-bottom: 15px;
+    font-size: 1.8rem;
+  }
+  
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    padding: 10px;
+  }
+} 

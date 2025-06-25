@@ -1,0 +1,105 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>
+      <mat-icon>upload_file</mat-icon>
+      Subir Documento
+    </h2>
+
+    <mat-dialog-content>
+      <form [formGroup]="documentForm" class="document-form">
+        <div class="file-selection-section">
+          <div class="file-input-container">
+            <input 
+              #fileInput 
+              type="file" 
+              (change)="onFileSelected($event)"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg,.gif,.webp"
+              style="display: none;">
+            
+            <button 
+              type="button"
+              mat-raised-button 
+              color="primary" 
+              (click)="fileInput.click()"
+              [disabled]="isUploading">
+              <mat-icon>attach_file</mat-icon>
+              {{ selectedFile ? 'Cambiar archivo' : 'Seleccionar archivo' }}
+            </button>
+          </div>
+
+          <div *ngIf="selectedFile" class="file-preview">
+            <div class="file-preview-item">
+              <mat-icon [style.color]="getFileIconColor(selectedFile.type)">
+                {{ getFileIcon(selectedFile.type) }}
+              </mat-icon>
+              <div class="file-details">
+                <div class="file-name">{{ selectedFile.name }}</div>
+                <div class="file-size">{{ formatFileSize(selectedFile.size) }}</div>
+                <div class="file-type">{{ selectedFile.type || 'Tipo desconocido' }}</div>
+              </div>
+              <button 
+                type="button"
+                mat-icon-button 
+                color="warn" 
+                (click)="removeFile()"
+                [disabled]="isUploading">
+                <mat-icon>close</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <mat-form-field class="full-width">
+          <mat-label>Tipo de documento</mat-label>
+          <mat-select formControlName="documentType" required>
+            <mat-option *ngFor="let type of documentTypes" [value]="type.value">
+              <mat-icon>{{ type.icon }}</mat-icon>
+              {{ type.label }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Descripción</mat-label>
+          <textarea 
+            matInput 
+            formControlName="description"
+            placeholder="Descripción del documento (opcional)"
+            rows="3">
+          </textarea>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+          <mat-label>Versión</mat-label>
+          <input 
+            matInput 
+            formControlName="version"
+            placeholder="ej: v1.0, Rev.A, Final">
+        </mat-form-field>
+
+        <div class="upload-info" *ngIf="selectedFile">
+          <div class="validation-status">
+            <mat-icon [style.color]="isFileValid ? '#4caf50' : '#f44336'">
+              {{ isFileValid ? 'check_circle' : 'error' }}
+            </mat-icon>
+            <span [style.color]="isFileValid ? '#4caf50' : '#f44336'">
+              {{ validationMessage }}
+            </span>
+          </div>
+        </div>
+      </form>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end">
+      <button mat-button (click)="onCancel()" [disabled]="isUploading">
+        Cancelar
+      </button>
+      <button 
+        mat-raised-button 
+        color="primary" 
+        (click)="onSubmit()"
+        [disabled]="!canSubmit || isUploading">
+        <mat-spinner diameter="20" *ngIf="isUploading"></mat-spinner>
+        {{ isUploading ? 'Subiendo...' : 'Subir Documento' }}
+      </button>
+    </mat-dialog-actions>
+  </div>

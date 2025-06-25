@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { authGuard } from './auth/auth.guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 export const routes: Routes = [
     {
@@ -12,11 +14,11 @@ export const routes: Routes = [
         component: LayoutComponent,
         canActivate: [authGuard],
         children: [
-
-            // { path: 'dashboard', component: DashboardComponent },
-            // { path: 'proyectos', loadChildren: () => import('./proyectos/proyectos.routes').then(m => m.proyectosRoutes) },
-            // { path: 'clientes', loadChildren: () => import('./clientes/clientes.routes').then(m => m.clientesRoutes) },
-            { path: '', redirectTo: 'proyectos', pathMatch: 'full' }
+            { path: 'dashboard', component: DashboardComponent, data: { title: 'Panel de control' } },
+            { path: 'proyectos', loadChildren: () => import('./projects/projects.routes').then(m => m.projectsRoutes) },
+            { path: 'clientes', loadChildren: () => import('./clients/clients.routes').then(m => m.clientsRoutes) },
+            { path: 'notificaciones', component: NotificationsComponent },
+            { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
         ]
     },
 ];

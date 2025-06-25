@@ -1,7 +1,11 @@
 <div class="login-container">
+  <div class="logo-container">
+    <mat-icon class="logo-icon">architecture</mat-icon>
+  <h1 class="logo-title">ArquiTrack</h1>
+</div>
   <mat-card class="login-card">
     <mat-card-header>
-      <mat-card-title>Iniciar Sesión</mat-card-title>
+      <mat-card-title class="login-title">Iniciar Sesión</mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
@@ -24,7 +28,23 @@
           </mat-error>
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="full-width">Login</button>
+        <button 
+          mat-raised-button 
+          type="submit" 
+          class="btn_login full-width">
+          <span *ngIf="!isLoading">Ingresar</span>
+          <span *ngIf="isLoading">Cargando...</span>
+        </button>
+
+        <div class="divider">
+          <span>o</span>
+        </div>
+    <button mat-button type="button" class="btn_social full-width" title="Iniciar sesión con Google" (click)="onGoogleSignIn()">
+      <img [src]="googleIcon" class="google-icon" alt="Google">
+      <span class="text_social">
+        Continuar con Google
+      </span>
+    </button>
 
         <div *ngIf="errorMessage" class="error-message">
           {{ errorMessage }}
@@ -32,7 +52,7 @@
       </form>
     </mat-card-content>
     <mat-card-actions align="start">
-      <p>¿No tenes cuenta? <a routerLink="/auth/register">Regístrate aquí</a></p>
+      <p>¿No tenes cuenta? <a class="a" routerLink="/auth/register">Regístrate</a></p>
     </mat-card-actions>
   </mat-card>
 </div>
