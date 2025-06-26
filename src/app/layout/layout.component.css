@@ -2,11 +2,26 @@
   height: 100%;
 }
 
+::ng-deep .mat-drawer {
+  border: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .mat-sidenav {
+  border: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+}
+
 .sidenav {
   width: 320px;
   font-family: "Inter", "Helvetica Neue", sans-serif;
   letter-spacing: normal;
-  background-color: #F8FAFC;
+  background-color: var(--secondary-color);
+  border: none !important;
+  border-right: none !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .sidenav .mat-toolbar {
@@ -18,7 +33,7 @@
   align-items: center;
   gap: 22px;
   padding: 26px;
-  margin-top: 10px;
+  background-color: #f0f4f8
 }
 
 .logo-container {

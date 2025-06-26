@@ -1,0 +1,97 @@
+<mat-card *ngIf="shouldShowCard()" class="notifications-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon>notifications</mat-icon>
+        Notificaciones Recientes
+        <mat-icon 
+          [matBadge]="unreadCount" 
+          matBadgeColor="warn" 
+          matBadgeSize="small"
+          *ngIf="unreadCount > 0">
+          notification_important
+        </mat-icon>
+      </mat-card-title>
+      <div class="header-actions">
+        <button 
+          mat-icon-button 
+          routerLink="/notificaciones" 
+          matTooltip="Ver todas las notificaciones"
+          class="view-all-btn">
+          <mat-icon>open_in_new</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="30"></mat-spinner>
+        <p>Cargando notificaciones...</p>
+      </div>
+
+      <div *ngIf="!isLoading" class="notifications-list">
+        <div *ngIf="recentNotifications.length === 0" class="empty-state">
+          <mat-icon>notifications_none</mat-icon>
+          <p>No tienes notificaciones recientes</p>
+        </div>
+
+        <div 
+          *ngFor="let notification of recentNotifications; let last = last" 
+          class="notification-item"
+          [class.unread]="!notification.isRead"
+          [class.urgent]="notification.priority === NotificationPriority.URGENT"
+          [class.high]="notification.priority === NotificationPriority.HIGH"
+          [class.last]="last"
+          (click)="onNotificationClick(notification)">
+          
+          <div class="notification-icon">
+            <mat-icon [color]="getIconColor(notification)">
+              {{ getNotificationIcon(notification.type) }}
+            </mat-icon>
+          </div>
+          
+          <div class="notification-content">
+            <div class="notification-header">
+              <h4 class="notification-title">{{ notification.title }}</h4>
+              <span class="notification-time">{{ formatTime(notification.createdAt) }}</span>
+            </div>
+            
+            <p class="notification-message">{{ notification.message }}</p>
+            
+            <!-- Metadatos importantes -->
+            <div class="notification-metadata" *ngIf="notification.metadata?.projectName">
+              <mat-icon>business_center</mat-icon>
+              <span>{{ notification.metadata.projectName }}</span>
+            </div>
+
+            <!-- Indicador de prioridad alta -->
+            <div class="priority-indicator" *ngIf="notification.priority === NotificationPriority.URGENT">
+              <mat-icon>priority_high</mat-icon>
+              <span>Urgente</span>
+            </div>
+          </div>
+
+          <div class="notification-actions" *ngIf="!notification.isRead">
+            <button 
+              mat-icon-button 
+              (click)="markAsRead(notification, $event)"
+              matTooltip="Marcar como leída"
+              class="mark-read-btn">
+              <mat-icon>check</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer con acción -->
+      <div class="card-footer" *ngIf="!isLoading && recentNotifications.length > 0">
+        <button 
+          mat-button 
+          color="primary" 
+          routerLink="/notificaciones"
+          class="view-all-button">
+          <mat-icon>list</mat-icon>
+          Ver todas las notificaciones ({{ totalNotifications }})
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>

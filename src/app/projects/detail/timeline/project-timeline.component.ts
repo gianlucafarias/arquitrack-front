@@ -23,6 +23,7 @@ import {
   MILESTONE_STATUS_LABELS,
   CreateMilestoneRequest
 } from '../../milestones/project-milestones.models';
+import { Project, ProjectRole } from '../../projects.models';
 
 @Component({
   selector: 'app-project-timeline',
@@ -49,6 +50,7 @@ import {
 })
 export class ProjectTimelineComponent implements OnInit {
   @Input() projectId!: string;
+  @Input() project!: Project;
 
   timelineItems: MilestoneTimelineItem[] = [];
   milestones: ProjectMilestone[] = [];
@@ -204,5 +206,15 @@ export class ProjectTimelineComponent implements OnInit {
     if (milestone) {
       this.deleteMilestone(milestone);
     }
+  }
+
+  // Métodos de validación de permisos
+  canManageTimeline(): boolean {
+    if (!this.project) return false;
+    
+    const currentUserRole = this.project.currentUserRole;
+    
+    // Solo propietario y miembros pueden gestionar cronograma
+    return currentUserRole === 'OWNER' || currentUserRole === ProjectRole.MEMBER;
   }
 } 

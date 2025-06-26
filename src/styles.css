@@ -69,7 +69,7 @@ html {
 }
 
 .btn_primary{
-  background-color: #0E141B !important;
+  background-color: #667EEA !important;
   color: #fff !important;
   border-radius: 8px !important;
   height: 44px !important;
@@ -78,7 +78,7 @@ html {
   text-transform: none !important;
   letter-spacing: normal !important;
   line-height: 1.5 !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.0.5) !important;
   transition: all 0.3s ease;
 }
 
@@ -86,6 +86,369 @@ html {
   background-color: #0e141bde !important;
   color: #fff !important;
   box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+  transition: all 0.3s ease;
+}
+
+.btn_secondary{
+  background-color: #667EEA !important;
+  color: #fff !important;
+  border-radius: 8px !important;
+  height: 44px !important;
+  font-size: 14px !important;
+}
+
+/* SISTEMA DE BOTONES PERSONALIZADOS - ESTILO ARQUITRACK */
+
+/* Botón principal - estilo consistente con la app */
+.btn-app {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: none;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  letter-spacing: normal;
+  line-height: 1.5;
+  height: 44px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.btn-app:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.12);
+  transform: translateY(-1px);
+}
+
+.btn-app:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Variaciones de color siguiendo el estilo de la app */
+.btn-app.primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-app.primary:hover {
+  background-color: #1a2027;
+}
+
+.btn-app.secondary {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  border: 1px solid var(--tertiary-color);
+}
+
+.btn-app.secondary:hover {
+  background-color: #d8e0ea;
+}
+
+.btn-app.accent {
+  background-color: #667EEA;
+  color: white;
+}
+
+.btn-app.accent:hover {
+  background-color: #5a6fd8;
+}
+
+.btn-app.success {
+  background-color: #4caf50;
+  color: white;
+}
+
+.btn-app.success:hover {
+  background-color: #45a049;
+}
+
+.btn-app.danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-app.danger:hover {
+  background-color: #d32f2f;
+}
+
+.btn-app.warning {
+  background-color: #ff9800;
+  color: white;
+}
+
+.btn-app.warning:hover {
+  background-color: #f57c00;
+}
+
+/* Botón outline - estilo minimalista */
+.btn-outline {
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  height: 44px;
+}
+
+.btn-outline.primary {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline.primary:hover {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-outline.secondary {
+  border-color: var(--tertiary-color);
+  color: var(--primary-color);
+}
+
+.btn-outline.secondary:hover {
+  background-color: var(--secondary-color);
+}
+
+.btn-outline.accent {
+  border-color: #667EEA;
+  color: #667EEA;
+}
+
+.btn-outline.accent:hover {
+  background-color: #667EEA;
+  color: white;
+}
+
+.btn-outline.danger {
+  border-color: #f44336;
+  color: #f44336;
+}
+
+.btn-outline.danger:hover {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Botón texto - super minimalista */
+.btn-text {
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-decoration: none;
+  border-radius: 6px;
+  color: var(--primary-color);
+}
+
+.btn-text:hover {
+  background-color: var(--secondary-color);
+}
+
+.btn-text.accent {
+  color: #667EEA;
+}
+
+.btn-text.accent:hover {
+  background-color: rgba(102, 126, 234, 0.1);
+}
+
+.btn-text.danger {
+  color: #f44336;
+}
+
+.btn-text.danger:hover {
+  background-color: rgba(244, 67, 54, 0.1);
+}
+
+/* Botón de icono - estilo app */
+.btn-icon-app {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background: var(--secondary-color);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary-color);
+}
+
+.btn-icon-app:hover {
+  background: #d8e0ea;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-icon-app.primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-icon-app.primary:hover {
+  background: #1a2027;
+}
+
+.btn-icon-app.accent {
+  background: #667EEA;
+  color: white;
+}
+
+.btn-icon-app.accent:hover {
+  background: #5a6fd8;
+}
+
+.btn-icon-app.danger {
+  background: #f44336;
+  color: white;
+}
+
+.btn-icon-app.danger:hover {
+  background: #d32f2f;
+}
+
+/* Botón flotante - estilo app */
+.btn-fab-app {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(14, 20, 27, 0.3);
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.btn-fab-app:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(14, 20, 27, 0.4);
+  background: #1a2027;
+}
+
+.btn-fab-app.accent {
+  background: #667EEA;
+}
+
+.btn-fab-app.accent:hover {
+  background: #5a6fd8;
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Tamaños */
+.btn-small {
+  padding: 8px 16px;
+  font-size: 12px;
+  height: 36px;
+}
+
+.btn-large {
+  padding: 16px 24px;
+  font-size: 16px;
+  height: 52px;
+}
+
+/* Estados */
+.btn-app:disabled,
+.btn-outline:disabled,
+.btn-text:disabled,
+.btn-icon-app:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.btn-app:disabled:hover,
+.btn-outline:disabled:hover,
+.btn-text:disabled:hover,
+.btn-icon-app:disabled:hover {
+  background-color: initial;
+  color: initial;
+  border-color: initial;
+}
+
+/* Botón con loading */
+.btn-loading {
+  position: relative;
+  pointer-events: none;
+}
+
+.btn-loading::after {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid;
+  border-color: currentColor transparent currentColor transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Grupo de botones */
+.btn-group-app {
+  display: inline-flex;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--tertiary-color);
+}
+
+.btn-group-app .btn-app,
+.btn-group-app .btn-outline {
+  border-radius: 0;
+  margin: 0;
+  border: none;
+}
+
+.btn-group-app .btn-app:not(:last-child),
+.btn-group-app .btn-outline:not(:last-child) {
+  border-right: 1px solid var(--tertiary-color);
+}
+
+/* Mejoras para integración con Material */
+.btn-app mat-icon,
+.btn-outline mat-icon,
+.btn-text mat-icon,
+.btn-icon-app mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
 }
 
 
@@ -103,4 +466,162 @@ html {
   text-decoration: none;
   color: #0E141B;
   font-weight: 700;
+}
+
+/* SISTEMA DE ICONOS PERSONALIZADOS */
+.custom-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  vertical-align: middle;
+}
+
+/* Iconos principales de navegación */
+.icon-home {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z'/%3E%3C/svg%3E");
+}
+
+.icon-projects {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M20 6h-2V4c0-1.11-.89-2-2-2H8c-1.11 0-2 .89-2 2v2H4c-1.11 0-2 .89-2 2v11c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zM8 4h8v2H8V4zm12 15H4V8h16v11z'/%3E%3C/svg%3E");
+}
+
+.icon-clients {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M16 4c0-1.11.89-2 2-2s2 .89 2 2-.89 2-2 2-2-.89-2-2zm4 18v-6h2.5l-2.54-7.63A1 1 0 0 0 19 8h-2c-.54 0-1 .46-1 1.05l2.5 7.45H18V22h2zm-7.5-10.5c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5S11 9.17 11 10.5s.67 1.5 1.5 1.5zm.5 6h2v7h-2v-7zm-2.94-1.33l-1.27 1.22c-.18.18-.3.43-.3.72 0 .55.45 1 1 1 .28 0 .53-.11.72-.31l2.25-2.25c.78-.78.78-2.05 0-2.83l-2.25-2.25c-.19-.2-.44-.31-.72-.31-.55 0-1 .45-1 1 0 .29.12.54.31.72l1.26 1.29z'/%3E%3C/svg%3E");
+}
+
+/* Iconos de acciones */
+.icon-add {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z'/%3E%3C/svg%3E");
+}
+
+.icon-edit {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z'/%3E%3C/svg%3E");
+}
+
+.icon-delete {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23d32f2f'%3E%3Cpath d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z'/%3E%3C/svg%3E");
+}
+
+.icon-view {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z'/%3E%3C/svg%3E");
+}
+
+.icon-close {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'/%3E%3C/svg%3E");
+}
+
+.icon-check {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%234caf50'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+}
+
+.icon-arrow-back {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z'/%3E%3C/svg%3E");
+}
+
+/* Iconos de información */
+.icon-person {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/%3E%3C/svg%3E");
+}
+
+.icon-location {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z'/%3E%3C/svg%3E");
+}
+
+.icon-calendar {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z'/%3E%3C/svg%3E");
+}
+
+.icon-money {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z'/%3E%3C/svg%3E");
+}
+
+.icon-email {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E");
+}
+
+.icon-phone {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z'/%3E%3C/svg%3E");
+}
+
+/* Iconos de notificaciones */
+.icon-notifications {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z'/%3E%3C/svg%3E");
+}
+
+.icon-notifications-none {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z'/%3E%3C/svg%3E");
+}
+
+.icon-refresh {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z'/%3E%3C/svg%3E");
+}
+
+/* Iconos de archivos y documentos */
+.icon-folder {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M10 4H4c-1.11 0-2 .89-2 2v12c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2h-8l-2-2z'/%3E%3C/svg%3E");
+}
+
+.icon-upload {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z'/%3E%3C/svg%3E");
+}
+
+.icon-download {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z'/%3E%3C/svg%3E");
+}
+
+.icon-photo {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z'/%3E%3C/svg%3E");
+}
+
+/* Iconos de tareas y estado */
+.icon-task {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z'/%3E%3C/svg%3E");
+}
+
+.icon-timeline {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M23 8c0 1.1-.9 2-2 2-.18 0-.35-.02-.51-.07l-3.56 3.55c.05.16.07.34.07.52 0 1.1-.9 2-2 2s-2-.9-2-2c0-.18.02-.36.07-.52l-2.55-2.55c-.16.05-.34.07-.52.07s-.36-.02-.52-.07l-4.55 4.56c.05.16.07.33.07.51 0 1.1-.9 2-2 2s-2-.9-2-2 .9-2 2-2c.18 0 .35.02.51.07l4.56-4.55C8.02 9.36 8 9.18 8 9c0-1.1.9-2 2-2s2 .9 2 2c0 .18-.02.36-.07.52l2.55 2.55c.16-.05.34-.07.52-.07s.36.02.52.07l3.56-3.55C19.02 8.35 19 8.18 19 8c0-1.1.9-2 2-2s2 .9 2 2z'/%3E%3C/svg%3E");
+}
+
+.icon-info {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z'/%3E%3C/svg%3E");
+}
+
+.icon-warning {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff9800'%3E%3Cpath d='M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z'/%3E%3C/svg%3E");
+}
+
+.icon-error {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23f44336'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z'/%3E%3C/svg%3E");
+}
+
+/* Iconos adicionales */
+.icon-search {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+}
+
+.icon-more-vert {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230e141b'%3E%3Cpath d='M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z'/%3E%3C/svg%3E");
+}
+
+/* Variaciones de tamaño */
+.custom-icon.size-16 { width: 16px; height: 16px; }
+.custom-icon.size-20 { width: 20px; height: 20px; }
+.custom-icon.size-32 { width: 32px; height: 32px; }
+.custom-icon.size-48 { width: 48px; height: 48px; }
+
+/* Variaciones de color para estados activos */
+.custom-icon.active {
+  filter: brightness(0) saturate(100%) invert(47%) sepia(94%) saturate(4151%) hue-rotate(211deg) brightness(98%) contrast(103%);
+}
+
+/* Clase helper para reemplazar mat-icon fácilmente */
+.mat-icon-replacement {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
 }

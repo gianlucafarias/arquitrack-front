@@ -15,7 +15,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                            req.url.includes('/api/auth/register') || 
                            req.url.includes('/api/auth/google');
         
-        if (!isAuthRoute) {
+        // No mostrar mensaje si estamos en una ruta de auth o si es un logout manual
+        if (!isAuthRoute && !authService.isManualLogout()) {
           snackBar.open('Su sesión ha expirado. Por favor, inicie sesión nuevamente', 'Cerrar', {
             duration: 5000,
             horizontalPosition: 'center',

@@ -232,10 +232,9 @@
       </mat-card-content>
 
       <mat-card-actions>
-        <button mat-button type="button" routerLink="/proyectos">Cancelar</button>
+        <button class="btn-app secondary" routerLink="/proyectos">Cancelar</button>
         <button 
-          mat-raised-button 
-          class="btn_primary" 
+          class="btn-app accent" 
           type="submit" 
           [disabled]="projectForm.invalid || submitLoading">
           <mat-icon>{{ isEditing ? 'save' : 'add' }}</mat-icon>

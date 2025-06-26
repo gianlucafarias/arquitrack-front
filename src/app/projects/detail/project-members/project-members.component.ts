@@ -19,9 +19,12 @@ import {
   ProjectRole, 
   InvitationStatus,
   PROJECT_ROLE_LABELS,
-  INVITATION_STATUS_LABELS 
+  INVITATION_STATUS_LABELS,
+  Project
 } from '../../projects.models';
 import { InviteUserDialogComponent, InviteUserDialogData } from '../dialogs/invite-user-dialog/invite-user-dialog.component';
+import { UserInfoDialogComponent, UserInfoDialogData } from '../dialogs/user-info-dialog/user-info-dialog.component';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   selector: 'app-project-members',
@@ -47,6 +50,7 @@ export class ProjectMembersComponent implements OnInit, OnChanges {
   @Input() projectName!: string;
   @Input() canManageMembers = false;
   @Input() currentUserId?: string;
+  @Input() project?: Project;
 
   members: ProjectMember[] = [];
   invitations: ProjectInvitation[] = [];
@@ -61,7 +65,8 @@ export class ProjectMembersComponent implements OnInit, OnChanges {
   constructor(
     private invitationsService: ProjectInvitationsService,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -86,7 +91,7 @@ export class ProjectMembersComponent implements OnInit, OnChanges {
     this.isLoadingMembers = true;
     this.invitationsService.getProjectMembers(this.projectId).subscribe({
       next: (members) => {
-        this.members = members;
+        this.members = this.addOwnerToMembers(members);
         this.isLoadingMembers = false;
       },
       error: (error) => {
@@ -94,6 +99,67 @@ export class ProjectMembersComponent implements OnInit, OnChanges {
         this.isLoadingMembers = false;
       }
     });
+  }
+
+  addOwnerToMembers(members: ProjectMember[]): ProjectMember[] {
+    if (!this.project?.architectId) return members;
+
+    // Verificar si el propietario ya está en la lista de miembros
+    const ownerExists = members.some(member => member.userId === this.project?.architectId);
+    
+    if (!ownerExists) {
+      const ownerInfo = this.getOwnerInfo();
+      
+      // Crear un miembro virtual para el propietario
+      const ownerMember: ProjectMember = {
+        id: 'owner',
+        userId: this.project.architectId,
+        projectId: this.project.id,
+        user: {
+          id: this.project.architectId,
+          email: ownerInfo.email,
+          name: ownerInfo.name
+        },
+        roleInProject: ProjectRole.MEMBER, // Será tratado como OWNER en el dialog
+        invitationStatus: InvitationStatus.ACCEPTED,
+        joinedAt: this.project.createdAt,
+        invitedById: this.project.architectId,
+        createdAt: this.project.createdAt,
+        updatedAt: this.project.updatedAt
+      };
+      
+      // Agregar el propietario al inicio de la lista
+      return [ownerMember, ...members];
+    }
+    
+    return members;
+  }
+
+  private getOwnerInfo(): { name: string, email: string } {
+    // Intentar obtener información del arquitecto desde el proyecto
+    if (this.project?.architect) {
+      return {
+        name: this.project.architect.name || 'Arquitecto propietario',
+        email: this.project.architect.email
+      };
+    }
+
+    // Si el usuario actual es el propietario, usar su información
+    if (this.currentUserId === this.project?.architectId) {
+      const currentUser = this.authService.getCurrentUser();
+      if (currentUser) {
+        return {
+          name: currentUser.name || 'Arquitecto propietario',
+          email: currentUser.email
+        };
+      }
+    }
+
+    // Fallback: mostrar información genérica
+    return {
+      name: 'Arquitecto propietario',
+      email: 'arquitecto@proyecto.com'
+    };
   }
 
   loadInvitations(): void {
@@ -193,5 +259,27 @@ export class ProjectMembersComponent implements OnInit, OnChanges {
   formatDate(date: string | null | undefined): string {
     if (!date) return 'Sin definir';
     return new Date(date).toLocaleDateString('es-ES');
+  }
+
+  openUserInfoDialog(member: ProjectMember): void {
+    const isOwner = member.id === 'owner' || (this.project?.architectId === member.userId);
+    
+    const dialogRef = this.dialog.open(UserInfoDialogComponent, {
+      data: {
+        member: member,
+        projectId: this.projectId,
+        isOwner: isOwner,
+        currentUserId: this.currentUserId,
+        canManageMembers: this.canManageMembers
+      } as UserInfoDialogData,
+      width: '600px',
+      maxWidth: '90vw'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === 'member_removed' || result === 'left_project') {
+        this.loadMembers();
+      }
+    });
   }
 } 

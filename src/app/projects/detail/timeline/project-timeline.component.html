@@ -4,10 +4,17 @@
       <h2>
         Cronograma del Proyecto
       </h2>
-      <p class="header-description">Gestiona los hitos y fechas clave del proyecto</p>
+      <p class="header-description" *ngIf="canManageTimeline()">Gestiona los hitos y fechas clave del proyecto</p>
+      <p class="header-description" *ngIf="!canManageTimeline()">Visualiza los hitos y fechas clave del proyecto</p>
+      
+      <!-- Mensaje informativo para usuarios sin permisos -->
+      <div *ngIf="!canManageTimeline()" class="permission-info" style="margin-top: 8px;">
+        <mat-icon style="color: #666; font-size: 16px; margin-right: 4px;">info</mat-icon>
+        <span style="color: #666; font-size: 14px;">Solo los propietarios y miembros pueden gestionar el cronograma</span>
+      </div>
     </div>
     
-    <div class="header-actions">
+    <div class="header-actions" *ngIf="canManageTimeline()">
       <button 
         mat-raised-button 
         class="btn_primary" 
@@ -26,7 +33,7 @@
   </div>
 
   <!-- Formulario para crear nuevo hito -->
-  <mat-card *ngIf="showAddMilestoneForm && !isLoading" class="add-milestone-card">
+  <mat-card *ngIf="showAddMilestoneForm && !isLoading && canManageTimeline()" class="add-milestone-card">
     <mat-card-header>
       <mat-card-title>
         <mat-icon>add_circle</mat-icon>
@@ -135,7 +142,7 @@
              
 
               <!-- Acciones del hito -->
-              <div class="milestone-actions" *ngIf="item.status !== 'COMPLETED'">
+              <div class="milestone-actions" *ngIf="item.status !== 'COMPLETED' && canManageTimeline()">
                 <button 
                   mat-button 
                   color="primary"
@@ -163,12 +170,13 @@
         <mat-icon>timeline</mat-icon>
       </div>
       <h3>No hay hitos definidos</h3>
-      <p>Crea el primer hito para comenzar a planificar el cronograma del proyecto.</p>
+      <p *ngIf="canManageTimeline()">Crea el primer hito para comenzar a planificar el cronograma del proyecto.</p>
+      <p *ngIf="!canManageTimeline()">El cronograma del proyecto aún no tiene hitos definidos.</p>
       <button 
         mat-raised-button 
         color="primary" 
         (click)="toggleAddMilestoneForm()"
-        *ngIf="!showAddMilestoneForm">
+        *ngIf="!showAddMilestoneForm && canManageTimeline()">
         <mat-icon>add</mat-icon>
         Crear Primer Hito
       </button>

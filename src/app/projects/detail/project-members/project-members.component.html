@@ -43,10 +43,17 @@
           <ng-container matColumnDef="user">
             <th mat-header-cell *matHeaderCellDef>Usuario</th>
             <td mat-cell *matCellDef="let member">
-              <div class="user-info">
+              <div class="user-info clickable-user" (click)="openUserInfoDialog(member)">
                 <mat-icon>person</mat-icon>
                 <div>
-                  <div class="user-name">{{ member.user.name || member.user.email }}</div>
+                  <div class="user-name">
+                    {{ member.user.name || member.user.email }}
+                    <mat-icon *ngIf="member.id === 'owner' || project?.architectId === member.userId" 
+                              class="owner-badge" 
+                              matTooltip="Propietario del proyecto">
+                      star
+                    </mat-icon>
+                  </div>
                   <div class="user-email">{{ member.user.email }}</div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Subscription } from 'rxjs';
 
 import { ProjectInvitationsService } from '../../../projects/project-invitations.service';
 import { 
@@ -215,10 +216,14 @@ import {
     }
   `]
 })
-export class PendingInvitationsComponent implements OnInit {
+export class PendingInvitationsComponent implements OnInit, OnDestroy {
+  @Output() invitationAccepted = new EventEmitter<ProjectInvitation>();
+  @Output() invitationRejected = new EventEmitter<ProjectInvitation>();
+  
   pendingInvitations: ProjectInvitation[] = [];
   isLoading = false;
   processingInvitations = new Set<string>();
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private invitationsService: ProjectInvitationsService,
@@ -226,21 +231,28 @@ export class PendingInvitationsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadPendingInvitations();
+    this.subscribeToInvitations();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private subscribeToInvitations(): void {
+    // Suscribirse al observable de invitaciones pendientes
+    const invitationsSub = this.invitationsService.pendingInvitations$.subscribe(
+      invitations => {
+        console.log('PendingInvitationsComponent: Nuevas invitaciones recibidas:', invitations);
+        this.pendingInvitations = invitations;
+        this.isLoading = false;
+      }
+    );
+    this.subscriptions.push(invitationsSub);
   }
 
   loadPendingInvitations(): void {
-    this.isLoading = true;
-    this.invitationsService.getPendingInvitations().subscribe({
-      next: (invitations) => {
-        this.pendingInvitations = invitations;
-        this.isLoading = false;
-      },
-      error: (error) => {
-        this.snackBar.open(error.message, 'Cerrar', { duration: 5000 });
-        this.isLoading = false;
-      }
-    });
+    // Ya no es necesario este método, pero lo mantenemos para compatibilidad
+    this.invitationsService.forceRefresh();
   }
 
   acceptInvitation(invitation: ProjectInvitation): void {
@@ -254,7 +266,8 @@ export class PendingInvitationsComponent implements OnInit {
           { duration: 5000, panelClass: ['success-snack'] }
         );
         this.processingInvitations.delete(invitation.id);
-        this.loadPendingInvitations(); // Recargar la lista
+        // Ya no necesitamos llamar loadPendingInvitations() porque el observable se actualiza automáticamente
+        this.invitationAccepted.emit(invitation); // Emitir evento al componente padre
       },
       error: (error) => {
         this.snackBar.open(error.message, 'Cerrar', { 
@@ -278,7 +291,8 @@ export class PendingInvitationsComponent implements OnInit {
             { duration: 3000 }
           );
           this.processingInvitations.delete(invitation.id);
-          this.loadPendingInvitations(); // Recargar la lista
+          // Ya no necesitamos llamar loadPendingInvitations() porque el observable se actualiza automáticamente
+          this.invitationRejected.emit(invitation); // Emitir evento al componente padre
         },
         error: (error) => {
           this.snackBar.open(error.message, 'Cerrar', { 

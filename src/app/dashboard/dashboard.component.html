@@ -11,7 +11,10 @@
     </mat-card>
   </div>
 
-  <app-pending-invitations></app-pending-invitations>
+  <app-pending-invitations 
+    (invitationAccepted)="onInvitationAccepted($event)"
+    (invitationRejected)="onInvitationRejected($event)">
+  </app-pending-invitations>
 
 
   <div class="summary-cards" *ngIf="summaryData">
@@ -45,15 +48,7 @@
       </mat-card-content>
     </mat-card>
 
-    <mat-card class="summary-card">
-      <mat-card-header>
-        <mat-card-title>Progreso de Tareas</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p class="stat-number">{{ summaryData.completedTasks }} / {{ summaryData.totalTasks }}</p>
-        <mat-icon>task_alt</mat-icon>
-      </mat-card-content>
-    </mat-card>
+  
   </div>
 
   <ng-container *ngIf="summaryData">
@@ -84,7 +79,7 @@
               <div class="no-data-container">
                 <mat-icon>assignment_late</mat-icon>
                 <p>No tienes proyectos propios activos en este momento.</p>
-                <a mat-raised-button color="primary" routerLink="/proyectos/nuevo">Crear Nuevo Proyecto</a>
+                <button class="btn-app accent" routerLink="/proyectos/nuevo">Crear Nuevo Proyecto</button>
               </div>
             </ng-template>
           </div>

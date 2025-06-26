@@ -1,0 +1,108 @@
+<div class="user-info-dialog">
+  <div mat-dialog-title class="dialog-header">
+    <div class="header-content">
+      <mat-icon class="user-icon">person</mat-icon>
+      <div class="user-details">
+        <h2>{{ data.member.user.name || data.member.user.email }}</h2>
+        <p class="user-email">{{ data.member.user.email }}</p>
+      </div>
+    </div>
+   
+  </div>
+
+  <div mat-dialog-content class="dialog-content">
+    <!-- Información del rol -->
+    <mat-card class="role-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>shield</mat-icon>
+          Rol en el proyecto
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="role-info">
+          <mat-chip [color]="getRoleColor(data.isOwner ? 'OWNER' : data.member.roleInProject)" class="role-chip">
+            {{ getRoleLabel(data.isOwner ? 'OWNER' : data.member.roleInProject) }}
+          </mat-chip>
+          <p class="role-description">
+            <span *ngIf="data.isOwner">Como propietario del proyecto, tiene control total sobre todas las funcionalidades.</span>
+            <span *ngIf="!data.isOwner && data.member.roleInProject === ProjectRole.MEMBER">Como miembro, puede acceder a la mayoría de funciones excepto la gestión de miembros.</span>
+            <span *ngIf="!data.isOwner && data.member.roleInProject === ProjectRole.COLLABORATOR">Como colaborador, puede gestionar tareas, registrar visitas y subir fotos.</span>
+            <span *ngIf="!data.isOwner && data.member.roleInProject === ProjectRole.VIEWER">Como observador, solo puede visualizar la información del proyecto.</span>
+          </p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Información de fecha de ingreso -->
+    <mat-card class="date-card" *ngIf="data.member.joinedAt">
+      <mat-card-header>
+       
+      </mat-card-header>
+      <mat-card-content>
+        <div class="date-info">
+          <div class="date-item">
+            <mat-icon>calendar_today</mat-icon>
+            <div>
+              <strong>Fecha de ingreso:</strong>
+              <span>{{ data.member.joinedAt | date:'dd/MM/yyyy' }}</span>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Permisos del usuario -->
+    <mat-card class="permissions-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>security</mat-icon>
+          Permisos en el proyecto
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="permissions-grid">
+          <div 
+            *ngFor="let permission of getUserPermissions()" 
+            class="permission-item"
+            [class.permission-allowed]="permission.allowed"
+            [class.permission-denied]="!permission.allowed">
+            <mat-icon [color]="permission.allowed ? 'primary' : 'disabled'">
+              {{ permission.allowed ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            <span>{{ permission.action }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <!-- Botón para que el usuario salga del proyecto -->
+    <button 
+      mat-raised-button 
+      color="warn" 
+      (click)="leaveProject()"
+      *ngIf="canLeaveProject()"
+      class="action-button">
+      <mat-icon>exit_to_app</mat-icon>
+      Salir del proyecto
+    </button>
+
+    <!-- Botón para remover miembro (solo para administradores) -->
+    <button 
+      mat-raised-button 
+      color="warn" 
+      (click)="removeMember()"
+      *ngIf="data.canManageMembers && !data.isOwner && data.member.userId !== data.currentUserId"
+      class="action-button">
+      <mat-icon>person_remove</mat-icon>
+      Remover del proyecto
+    </button>
+
+    <!-- Botón cerrar -->
+    <button mat-button (click)="close()" class="close-action">
+      Cerrar
+    </button>
+  </div>
+</div> 

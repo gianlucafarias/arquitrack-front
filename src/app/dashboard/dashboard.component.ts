@@ -11,7 +11,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { RouterModule } from '@angular/router';
 
 // No necesitamos los servicios si vamos a hardcodear, pero sí los modelos y enums
-import { Project, ProjectStatus, PROJECT_STATUS_LABELS, ProjectMemberDetails, ProjectRole, PROJECT_ROLE_LABELS, CategorizedProjectsResponse } from '../projects/projects.models'; 
+import { Project, ProjectStatus, PROJECT_STATUS_LABELS, ProjectMemberDetails, ProjectRole, PROJECT_ROLE_LABELS, CategorizedProjectsResponse, ProjectInvitation } from '../projects/projects.models'; 
 // import { Client } from '../clients/clients.models'; // No la usaremos directamente en el summary hardcodeado
 import { Task } from '../tasks/tasks.models'; // No la usaremos directamente en el summary hardcodeado
 
@@ -60,7 +60,6 @@ export class DashboardComponent implements OnInit {
   isLoading = true;
   error: string | null = null;
   
-  // Hacer enums accesibles desde la plantilla
   ProjectStatus = ProjectStatus;
   ProjectRole = ProjectRole;
 
@@ -168,6 +167,18 @@ export class DashboardComponent implements OnInit {
   // Método para refrescar los datos
   refreshData(): void {
     this.loadDashboardData();
+  }
+
+  // Método para manejar cuando se acepta una invitación
+  onInvitationAccepted(invitation: ProjectInvitation): void {
+    console.log('Invitación aceptada:', invitation);
+    // Refrescar los datos del dashboard para mostrar el nuevo proyecto en colaboraciones
+    this.refreshData();
+  }
+
+  // Método para manejar cuando se rechaza una invitación
+  onInvitationRejected(invitation: ProjectInvitation): void {
+    console.log('Invitación rechazada:', invitation);
   }
 
   // Método para obtener el color del chip según el rol

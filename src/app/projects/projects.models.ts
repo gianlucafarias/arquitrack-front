@@ -65,12 +65,17 @@ export interface Project {
   initialBudget: number | null;
   status: ProjectStatus;
   architectId: string;
+  architect?: {
+    id: string;
+    name: string;
+    email: string;
+  };
   createdAt: string;
   updatedAt: string;
   taskCount?: number;
   completedTaskCount?: number;
   progressPercent?: number;
-  currentUserRole?: string;
+  currentUserRole?: ProjectRole | 'OWNER'; // OWNER para arquitecto propietario
   photos?: ProjectPhoto[];
 }
 

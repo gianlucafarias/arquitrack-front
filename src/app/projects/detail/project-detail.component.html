@@ -105,7 +105,7 @@
                     <div class="info-section">
                       <div class="visits-header">
                         <h2>Visitas a Obra</h2>
-                        <button mat-raised-button class="btn_primary" (click)="openNewVisitDialog()">
+                        <button class="btn-app accent" (click)="openNewVisitDialog()" *ngIf="canCreateVisits()">
                           <mat-icon>add</mat-icon> Registrar Visita
                         </button>
                       </div>
@@ -174,7 +174,7 @@
                       <div *ngIf="!isLoadingVisits && visits.length === 0" class="no-data-container">
                         <mat-icon>engineering_off</mat-icon>
                         <p>No hay visitas registradas para este proyecto.</p>
-                        <button mat-raised-button color="primary" (click)="openNewVisitDialog()">
+                        <button class="btn-app accent" (click)="openNewVisitDialog()" *ngIf="canCreateVisits()">
                           <mat-icon>add</mat-icon> Registrar Primera Visita
                         </button>
                       </div>
@@ -220,7 +220,7 @@
                     <div class="info-section">
                       <div class="files-header">
                         <h2>Galería de Fotos</h2>
-                        <button mat-raised-button class="btn_primary" (click)="openPhotoUploadDialog()">
+                        <button class="btn-app accent" (click)="openPhotoUploadDialog()" *ngIf="canUploadPhotos()">
                           <mat-icon>add_photo_alternate</mat-icon> Subir Foto
                         </button>
                       </div>
@@ -244,7 +244,7 @@
                     <div *ngIf="getPhotos().length === 0" class="gallery-placeholder">
                       <mat-icon>photo_library</mat-icon>
                       <p>No hay fotos en este proyecto</p>
-                      <button mat-raised-button color="primary" (click)="openPhotoUploadDialog()">
+                      <button mat-raised-button color="primary" (click)="openPhotoUploadDialog()" *ngIf="canUploadPhotos()">
                         <mat-icon>add_photo_alternate</mat-icon> Subir Primera Foto
                       </button>
                     </div>
@@ -264,7 +264,7 @@
           <div class="tasks-section">
             <div class="tasks-header">
               <h2>Tareas del Proyecto</h2>
-              <button mat-raised-button class="btn_primary" (click)="openNewTaskDialog()">
+              <button mat-raised-button class="btn_primary" (click)="openNewTaskDialog()" *ngIf="canManageTasks()">
                 <mat-icon>add</mat-icon> Nueva Tarea
               </button>
             </div>
@@ -309,7 +309,7 @@
                 <div *ngIf="tasks.length === 0" class="no-data-container">
                   <mat-icon>assignment_late</mat-icon>
                   <p>No hay tareas registradas para este proyecto.</p>
-                  <button mat-raised-button color="primary">
+                  <button mat-raised-button color="primary" *ngIf="canManageTasks()">
                     Crear Primera Tarea
                   </button>
                 </div>
@@ -318,7 +318,7 @@
           </div>
         </mat-tab>
         
-        <mat-tab>
+        <mat-tab *ngIf="canViewBudget()">
           <ng-template mat-tab-label>
             <mat-icon class="tab-icon">attach_money</mat-icon>
             <span style="letter-spacing: 0.6px;">Presupuesto</span>
@@ -336,7 +336,7 @@
           </ng-template>
           
           <div class="timeline-section">
-            <app-project-timeline [projectId]="projectId"></app-project-timeline>
+            <app-project-timeline [projectId]="projectId" [project]="project"></app-project-timeline>
           </div>
         </mat-tab>
 
@@ -349,7 +349,7 @@
           <div class="files-section">
             <div class="files-header">
               <h2>Archivos del Proyecto</h2>
-              <button mat-raised-button class="btn_primary" (click)="openNewDocumentDialog()">
+              <button mat-raised-button class="btn_primary" (click)="openNewDocumentDialog()" *ngIf="canUploadDocuments()">
                 <mat-icon>upload_file</mat-icon> Subir Archivo
               </button>
             </div>
@@ -378,7 +378,7 @@
                       <a mat-icon-button color="primary" [href]="document.fileUrl" download [matTooltip]="'Descargar ' + document.fileName">
                         <mat-icon>download</mat-icon>
                       </a>
-                      <button mat-icon-button color="warn" [matTooltip]="'Eliminar archivo'" (click)="deleteDocument(document)">
+                      <button mat-icon-button color="warn" [matTooltip]="'Eliminar archivo'" (click)="deleteDocument(document)" *ngIf="canDeleteDocuments()">
                         <mat-icon>delete</mat-icon>
                       </button>
                     </mat-card-actions>
@@ -388,7 +388,7 @@
                 <div *ngIf="documents.length === 0" class="no-data-container">
                   <mat-icon>folder_off</mat-icon>
                   <p>No hay archivos adjuntos a este proyecto.</p>
-                  <button mat-raised-button color="primary" (click)="openNewDocumentDialog()">
+                  <button mat-raised-button color="primary" (click)="openNewDocumentDialog()" *ngIf="canUploadDocuments()">
                     <mat-icon>upload_file</mat-icon> Subir Archivo
                   </button>
                 </div>
@@ -408,7 +408,8 @@
               [projectId]="projectId"
               [projectName]="project.name || ''"
               [canManageMembers]="canManageMembers()"
-              [currentUserId]="currentUserId || undefined">
+              [currentUserId]="currentUserId || undefined"
+              [project]="project">
             </app-project-members>
           </div>
         </mat-tab>
@@ -416,10 +417,10 @@
     </div>
     
     <div class="action-buttons">
-      <a mat-raised-button [routerLink]="['/proyectos', project.id, 'editar']" color="primary">
+      <button class="btn-text accent-auto" [routerLink]="['/proyectos', project.id, 'editar']" *ngIf="canEditProject()">
         <mat-icon>edit</mat-icon> Editar Proyecto
-      </a>
-      <button mat-raised-button color="warn" (click)="deleteProject()">
+      </button>
+      <button class="btn-app danger" (click)="deleteProject()" *ngIf="canDeleteProject()">
         <mat-icon>delete</mat-icon> Eliminar Proyecto
       </button>
     </div>
@@ -439,4 +440,6 @@
       <mat-icon>close</mat-icon>
     </button>
   </div>
-</div> 
+</div>
+
+ 

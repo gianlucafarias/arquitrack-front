@@ -14,6 +14,7 @@ export class AuthService {
   private readonly TOKEN_KEY = 'authToken';
   private platformId = inject(PLATFORM_ID);
   private authStatusSubject = new BehaviorSubject<boolean>(this.isAuthenticated());
+  private isLoggingOut = false; // Bandera para evitar mensajes durante logout manual
   
   // Observable público para el estado de autenticación
   public authStatus$ = this.authStatusSubject.asObservable();
@@ -122,9 +123,21 @@ export class AuthService {
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
+      this.isLoggingOut = true; // Marcar que estamos haciendo logout manual
       localStorage.removeItem(this.TOKEN_KEY);
       this.authStatusSubject.next(false);
-      this.router.navigate(['/auth/login']);
+      
+      // Cerrar sesión en Firebase también
+      this.auth.signOut().catch(error => {
+        console.warn('Error al cerrar sesión en Firebase:', error);
+      });
+      
+      this.router.navigate(['/auth/login']).then(() => {
+        // Resetear la bandera después de navegar
+        setTimeout(() => {
+          this.isLoggingOut = false;
+        }, 1000);
+      });
     }
   }
 
@@ -168,8 +181,15 @@ export class AuthService {
   
   // Método para manejar la expiración del token (llamado desde interceptor)
   handleTokenExpiration(): void {
-    console.warn('El token ha expirado o es inválido. Cerrando sesión...');
-    this.logout();
+    if (!this.isLoggingOut) {
+      console.warn('El token ha expirado o es inválido. Cerrando sesión...');
+      this.logout();
+    }
+  }
+
+  // Método para verificar si se está realizando logout manual
+  isManualLogout(): boolean {
+    return this.isLoggingOut;
   }
 
   // Método para obtener información del usuario actual desde el token

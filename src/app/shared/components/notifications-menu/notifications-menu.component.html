@@ -1,0 +1,92 @@
+<button 
+mat-icon-button 
+class="notifications-button"
+[matMenuTriggerFor]="notificationsMenu"
+[matBadge]="unreadCount"
+[matBadgeHidden]="unreadCount === 0"
+matBadgeColor="warn"
+matBadgeSize="medium"
+aria-label="Notificaciones">
+<mat-icon>notifications</mat-icon>
+<span *ngIf="unreadCount > 0" class="notification-dot"></span>
+</button>
+
+<mat-menu #notificationsMenu="matMenu" class="notifications-menu" panelClass="notifications-menu" xPosition="before" yPosition="below" [overlapTrigger]="false">
+<div class="notifications-menu-content" (click)="$event.stopPropagation()">
+  <!-- Header del menú con gradiente -->
+  <div class="notifications-header">
+    <div class="header-title">
+      <mat-icon class="header-icon">notifications_active</mat-icon>
+      <div class="title-text">
+        <h3>Notificaciones</h3>
+        <span class="subtitle" *ngIf="unreadCount > 0">{{ unreadCount }} sin leer</span>
+        <span class="subtitle" *ngIf="unreadCount === 0">Todo al día</span>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button 
+        mat-icon-button 
+        (click)="refreshNotifications()" 
+        matTooltip="Refrescar"
+        class="refresh-button">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Acciones rápidas -->
+  <div class="quick-actions" *ngIf="unreadCount > 0">
+    <button 
+      mat-stroked-button 
+      color="primary" 
+      (click)="markAllAsRead()"
+      class="mark-all-button">
+      <mat-icon>done_all</mat-icon>
+      Marcar todas como leídas
+    </button>
+  </div>
+
+  <!-- Estado de carga -->
+  <div *ngIf="isLoading" class="loading-container">
+    <mat-spinner diameter="40" color="primary"></mat-spinner>
+    <p>Cargando notificaciones...</p>
+  </div>
+
+  <!-- Lista de notificaciones -->
+  <div *ngIf="!isLoading" class="notifications-list">
+    <div *ngIf="notifications.length === 0" class="empty-state">
+      <div class="empty-icon">
+        <mat-icon>notifications_none</mat-icon>
+      </div>
+      <h4>¡Todo limpio!</h4>
+      <p>No tienes notificaciones pendientes</p>
+    </div>
+
+    <div class="notifications-items">
+      <app-notification-item
+        *ngFor="let notification of notifications; trackBy: trackByNotificationId; let i = index"
+        [notification]="notification"
+        [compact]="true"
+        (markAsRead)="onMarkAsRead($event)"
+        (delete)="onDeleteNotification($event)"
+        (click)="onNotificationClick($event)"
+        [style.animation-delay]="i * 50 + 'ms'">
+      </app-notification-item>
+    </div>
+
+    <!-- Mensaje de límite alcanzado -->
+    <div *ngIf="notifications.length >= maxNotifications" class="limit-message">
+      <mat-icon>info_outline</mat-icon>
+      <span>Mostrando las {{ maxNotifications }} más recientes</span>
+    </div>
+  </div>
+
+  <!-- Footer del menú -->
+  <div class="notifications-footer">
+    <a mat-flat-button color="primary" routerLink="/notificaciones" class="view-all-button">
+      <mat-icon>open_in_new</mat-icon>
+      Ver todas las notificaciones
+    </a>
+  </div>
+</div>
+</mat-menu>

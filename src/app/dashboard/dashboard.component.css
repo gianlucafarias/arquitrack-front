@@ -222,9 +222,11 @@
 /* Estilos para tabs */
 .tab-content {
   padding: 20px 0;
+
 }
 
 .section-header {
+  margin-top: 20px;
   margin-bottom: 30px;
   text-align: center;
 }
@@ -246,6 +248,7 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 25px;
   margin-top: 20px;
+
 }
 
 /* Estilos específicos para avatares de categorías */

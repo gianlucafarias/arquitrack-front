@@ -24,7 +24,7 @@ export class NotificationsService {
   public notifications$ = this.notificationsSubject.asObservable();
   
   // Control de polling automático
-  private pollingInterval = 30000; // 30 segundos
+  private pollingInterval = 10000; // 10 segundos (más responsivo)
   private pollingSubscription: any;
 
   constructor(
@@ -213,19 +213,21 @@ export class NotificationsService {
     // Cargar datos iniciales
     this.refreshNotifications();
 
-    // Polling cada 30 segundos
+    // Polling cada 10 segundos
     this.pollingSubscription = interval(this.pollingInterval).pipe(
-      switchMap(() => this.getUnreadCount()),
+      switchMap(() => {
+        // Primero obtener notificaciones y luego el contador
+        return this.getNotifications({ includeRead: false, limit: 10 }).pipe(
+          switchMap(() => this.getUnreadCount())
+        );
+      }),
       distinctUntilChanged((prev, curr) => prev.count === curr.count),
       catchError(error => {
         console.error('Error en polling de notificaciones:', error);
         return [];
       })
     ).subscribe(response => {
-      // Si hay cambios en el contador, refrescar notificaciones
-      if (response.count !== this.unreadCountSubject.value) {
-        this.refreshNotifications();
-      }
+      console.log('NotificationsService: Polling completado, contador actual:', response.count);
     });
   }
 
@@ -242,14 +244,21 @@ export class NotificationsService {
    * Refresca las notificaciones y el contador
    */
   refreshNotifications(): void {
-    // Obtener contador de no leídas
-    this.getUnreadCount().subscribe();
-    
-    // Obtener notificaciones recientes (solo no leídas para el menú)
+    // Obtener notificaciones primero (incluye actualización del subject)
     this.getNotifications({ 
       includeRead: false, 
       limit: 10 
-    }).subscribe();
+    }).subscribe({
+      next: () => {
+        // Después obtener el contador actualizado
+        this.getUnreadCount().subscribe();
+      },
+      error: (error) => {
+        console.error('Error al refrescar notificaciones:', error);
+        // Aún intentar obtener el contador aunque fallen las notificaciones
+        this.getUnreadCount().subscribe();
+      }
+    });
   }
 
   /**

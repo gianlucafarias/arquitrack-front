@@ -34,7 +34,7 @@ import { ProjectPhotosService } from '../photos/project-photos.service';
 import { AuthService } from '../../auth/auth.service';
 
 // Modelos
-import { Project, ProjectStatus, PROJECT_STATUS_LABELS } from '../projects.models';
+import { Project, ProjectStatus, PROJECT_STATUS_LABELS, ProjectRole } from '../projects.models';
 import { SafePipe } from '../../shared/pipes/safe.pipe';
 import { Task, TaskStatus, TaskPayload } from '../../tasks/tasks.models';
 import { SiteVisit, SiteVisitSummary, SiteVisitPayload } from '../../visits/visits.model';
@@ -299,9 +299,22 @@ export class ProjectDetailComponent implements OnInit {
     this.projectsService.getProjectById(id).subscribe({
       next: (project) => {
         this.project = project;
+        
+        // asignar rol si el backend no lo provee
+        if (!this.project.currentUserRole && this.currentUserId) {
+          if (this.project.architectId === this.currentUserId) {
+            // Es el arquitecto propietario
+            this.project.currentUserRole = 'OWNER';
+          } else {
+            //  VIEWER por defecto
+            this.project.currentUserRole = ProjectRole.VIEWER;
+          }
+        }
+        
         this.titleService.setTitle(`Proyecto - ${this.project?.name}`);
         this.isLoading = false;
         console.log('Proyecto cargado:', project);
+        console.log('Rol del usuario actual:', this.project.currentUserRole);
         console.log('URL de imagen principal:', this.getMainProjectImage());
       },
       error: (error) => {
@@ -526,6 +539,127 @@ export class ProjectDetailComponent implements OnInit {
   canManageMembers(): boolean {
     return this.project?.architectId === this.currentUserId;
   }
+
+  // Métodos de validación de permisos basados en roles
+  
+  /**
+   * Verifica si el usuario puede editar el proyecto
+   */
+  canEditProject(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede editar
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Solo los miembros pueden editar
+    return this.project.currentUserRole === ProjectRole.MEMBER;
+  }
+
+  /**
+   * Verifica si el usuario puede eliminar el proyecto
+   */
+  canDeleteProject(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // Solo el arquitecto propietario puede eliminar
+    return this.project.architectId === this.currentUserId;
+  }
+
+  /**
+   * Verifica si el usuario puede crear/eliminar tareas
+   */
+  canManageTasks(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Miembros y colaboradores pueden gestionar tareas
+    return this.project.currentUserRole === ProjectRole.MEMBER || 
+           this.project.currentUserRole === ProjectRole.COLLABORATOR;
+  }
+
+  /**
+   * Verifica si el usuario puede registrar visitas
+   */
+  canCreateVisits(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Miembros y colaboradores pueden registrar visitas
+    return this.project.currentUserRole === ProjectRole.MEMBER || 
+           this.project.currentUserRole === ProjectRole.COLLABORATOR;
+  }
+
+  /**
+   * Verifica si el usuario puede subir documentos/archivos
+   */
+  canUploadDocuments(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Solo los miembros pueden subir documentos
+    return this.project.currentUserRole === ProjectRole.MEMBER;
+  }
+
+  /**
+   * Verifica si el usuario puede eliminar documentos/archivos
+   */
+  canDeleteDocuments(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Solo los miembros pueden eliminar documentos
+    return this.project.currentUserRole === ProjectRole.MEMBER;
+  }
+
+  /**
+   * Verifica si el usuario puede subir fotos
+   */
+  canUploadPhotos(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Miembros y colaboradores pueden subir fotos
+    return this.project.currentUserRole === ProjectRole.MEMBER || 
+           this.project.currentUserRole === ProjectRole.COLLABORATOR;
+  }
+
+  /**
+   * Verifica si el usuario puede ver el presupuesto
+   */
+  canViewBudget(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Solo los miembros pueden ver el presupuesto
+    return this.project.currentUserRole === ProjectRole.MEMBER;
+  }
+
+  /**
+   * Verifica si el usuario puede gestionar el cronograma/hitos
+   */
+  canManageTimeline(): boolean {
+    if (!this.project || !this.currentUserId) return false;
+    
+    // El arquitecto propietario siempre puede
+    if (this.project.architectId === this.currentUserId) return true;
+    
+    // Solo los miembros pueden gestionar el cronograma
+    return this.project.currentUserRole === ProjectRole.MEMBER;
+  }
+
+
 
   openNewDocumentDialog(): void {
     const dialogRef = this.dialog.open(NewDocumentDialogComponent, {
